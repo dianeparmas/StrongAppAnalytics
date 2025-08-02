@@ -22,10 +22,9 @@ ChartJS.register(
 );
 
 const Chart = ({ chartData = [], title }) => {
-    console.log(chartData);
+  console.log(chartData);
   const chartConfig = {
     labels: chartData.map((item) => item.date),
-    // labels: ["t", "k", "k",],
     datasets: [
       {
         label: "Max Weight (kg)",
@@ -33,12 +32,12 @@ const Chart = ({ chartData = [], title }) => {
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
-    ]
+    ],
   };
 
   const options = {
     responsive: true,
-    type: 'line',
+    type: "line",
     plugins: {
       legend: { position: "top" },
       title: { display: true, text: `Progress for: ${title}` },

@@ -30,17 +30,6 @@ function App() {
     return Array.from(exerciseNames);
   }, [exArray]);
 
-  // Example of how you might add a new workout
-  // This could be triggered by a form submission
-  const handleAddWorkoutClick = () => {
-    const newEntry = {
-      date: `2025-08-0${workoutData.length + 1}`,
-      calories: Math.floor(Math.random() * 500) + 300,
-      type: "Yoga",
-    };
-    addWorkout(newEntry);
-  };
-
   const onChange = (e) => {
     const file = e.target.files[0];
     console.log(file);
@@ -65,9 +54,7 @@ function App() {
           });
           console.log("modifiedResults", modifiedResults);
           setExArray(modifiedResults);
-          // 'results.data' is an array of objects
           setCsvData(results.data);
-          // 'results.meta.fields' contains the header names
           setHeaders(results.meta.fields);
           console.log(results);
         },
@@ -82,39 +69,29 @@ function App() {
     if (!selectedExercise || exArray.length === 0) {
       return null;
     }
-
-    // 1. Filter the data to only include the selected exercise
     const filteredData = exArray.filter(
       (item) => item.Name === selectedExercise,
     );
 
-    // 2. Group the data by workout session (Date) to find the max weight
     const sessions = {};
     filteredData.forEach((item) => {
-      // The Date includes time, so we need to truncate it to a single day for the x-axis
       const workoutDate = item.Date.split(" ")[0];
 
-      // If this is the first entry for this workout session, initialize it
       if (!sessions[workoutDate]) {
         sessions[workoutDate] = {
           date: workoutDate,
           maxWeight: item.Weight,
         };
       } else {
-        // Otherwise, update the max weight if the current item is heavier
         if (item.Weight > sessions[workoutDate].maxWeight) {
           sessions[workoutDate].maxWeight = item.Weight;
         }
       }
     });
 
-    // 3. Convert the grouped sessions object into an array for the chart
     const processedChartData = Object.values(sessions);
-
-    // 4. Sort the data by date to ensure the line chart is chronological
     processedChartData.sort((a, b) => new Date(a.Date) - new Date(b.Date));
 
-    // This is the final data format your Chart.js component expects
     console.log("processedChartData:", processedChartData);
     return processedChartData;
   }, [exArray, selectedExercise]);
@@ -134,11 +111,7 @@ function App() {
       {uniqueExercises.length > 0 && (
         <div>
           <label>Select an Exercise:</label>
-
-          <select
-            // defaultValue="Goblet Squat (Kettlebell)"
-            onChange={(e) => setSelectedExercise(e.target.value)}
-          >
+          <select onChange={(e) => setSelectedExercise(e.target.value)}>
             <option key={"None"} value={"None"}>
               {"None"}
             </option>
