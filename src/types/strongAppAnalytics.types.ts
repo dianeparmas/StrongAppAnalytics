@@ -32,3 +32,16 @@ export interface WorkoutCalendarProps {
   uniqueDates: string[];
   workoutData: ParsedResultData[];
 }
+
+export interface CustomUploadBtnProps {
+  className?: string;
+  defaultLabel?: string;
+  isMultiple?: boolean;
+  isSuccessfulUpload: boolean;
+  onChangeFunction: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface IconProps {
+  icon: string;
+  onClickFunction?: () => void;
+}

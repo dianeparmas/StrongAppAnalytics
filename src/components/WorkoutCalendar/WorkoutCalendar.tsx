@@ -2,7 +2,7 @@ import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // Import the default CSS
 
-import { WorkoutCalendarProps } from "..//../types/strongAppAnalytics.types";
+import { WorkoutCalendarProps } from "../../types/strongAppAnalytics.types";
 
 import "./WorkoutCalendar.css";
 
@@ -40,7 +40,10 @@ const WorkoutCalendar = ({
 
   return (
     <>
-      <p>Click on the workout-day to get detailed information about the excercises performed on that day</p>
+      <p>
+        Click on the workout-day to get detailed information about the
+        excercises performed on that day
+      </p>
       <div className="calendar-container">
         <Calendar onClickDay={handleDayClick} tileClassName={tileClassName} />
         {selectedDate && (
