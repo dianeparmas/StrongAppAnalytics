@@ -42,18 +42,29 @@ const Chart = ({ chartData = [], selectedExercises = [] }) => {
       chartData.forEach((item) => {
         const workoutDate = formatDateToYYYYMMDD(new Date(item.Date));
         const numericWeight = Number(item.Weight);
+        const numericDuration = Number(item.Duration);
 
         // Check if the exercise key exists
         if (!compiledData[item.Name]) {
           compiledData[item.Name] = {};
         }
 
-        // Check if an entry for this date exists, and if the current weight is a new max
-        if (
-          !compiledData[item.Name][workoutDate] ||
-          numericWeight > compiledData[item.Name][workoutDate]
-        ) {
-          compiledData[item.Name][workoutDate] = numericWeight;
+        if (item.Name === "Deadhang") {
+          // For "Deadhang", we want to store the duration in seconds
+          if (
+            !compiledData[item.Name][workoutDate] ||
+            numericDuration > compiledData[item.Name][workoutDate]
+          ) {
+            compiledData[item.Name][workoutDate] = numericDuration;
+          }
+        } else {
+          // Check if an entry for this date exists, and if the current weight is a new max
+          if (
+            !compiledData[item.Name][workoutDate] ||
+            numericWeight > compiledData[item.Name][workoutDate]
+          ) {
+            compiledData[item.Name][workoutDate] = numericWeight;
+          }
         }
       });
 
@@ -92,19 +103,20 @@ const Chart = ({ chartData = [], selectedExercises = [] }) => {
             dataForChart.push(currentWeight);
             backgroundColors.push(randomColor); // Color for a workout day
           } else {
-            console.log('ELSE NO WORKOUT DATA');
+            console.log("ELSE NO WORKOUT DATA");
             // If there's no new weight, use the last known weight and a different color
             dataForChart.push(lastKnownWeight);
             backgroundColors.push("rgba(195, 195, 195, 0.3)");
           }
         });
-        const { style, radius, offset } = pointStyles[index % pointStyles.length];
+        const { style, radius, offset } =
+          pointStyles[index % pointStyles.length];
 
         return {
           label: exerciseName,
-          data: dataForChart.map((value, i) => ({ 
-              x: i + offset, 
-              y: value 
+          data: dataForChart.map((value, i) => ({
+            x: i + offset,
+            y: value,
           })),
           borderColor: randomColor,
           pointBorderColor: randomColor,
@@ -169,7 +181,30 @@ const Chart = ({ chartData = [], selectedExercises = [] }) => {
   return (
     <>
       {workoutData?.datasets?.length > 0 ? (
-        <Line options={options} data={workoutData} />
+        <>
+          {selectedExercises.length === 1 && (
+            <>
+              <p>Viewing individual data for: {selectedExercises[0]}</p>
+              <button onClick={handleSeeSetsData}>
+                See individual data for sets
+              </button>
+              <label>Choose metric type:</label>
+              <select
+                onChange={(event) => handleChangeMetricType(event)}
+                size={1}
+              >
+                <option key={"Weight"} value={"Weight"}>
+                  Weight
+                </option>
+                <option key={"Reps"} value={"Reps"}>
+                  Reps
+                </option>
+              </select>
+            </>
+          )}
+
+          <Line options={options} data={testing ? testing : workoutData} />
+        </>
       ) : (
         <p>Please select one or more exercises to view the graph.</p>
       )}

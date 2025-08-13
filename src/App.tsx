@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import Papa from "papaparse";
 
 import Chart from "./components/Chart/Chart";
+import CustomUploadBtn from "./components/CustomUploadBtn/CustomUploadBtn";
+import Icon from "./components/Icon/Icon";
 import WorkoutCalendar from "./components/WorkoutCalendar/WorkoutCalendar";
 
 import {
@@ -24,6 +26,8 @@ function App() {
   const [saveNew, setSaveNew] = useState(false);
   const [uploadSuccessful, setUploadSuccessful] = useState(false);
   const [currentDataType, setCurrentDataType] = useState("");
+  const [uploadedFileDate, setUploadedFileDate] = useState<Date>();
+  const [mergedData, setMergedData] = useState([]);
 
   useEffect(() => {
     checkLocalStorage();
@@ -35,39 +39,50 @@ function App() {
     return Array.from(exerciseNames);
   }, [parsedCsv]);
 
+  const modifyParsedCSV = (csv) => {
+    const transformedData = csv?.data
+      ?.filter((result) => {
+        return result["Set Order"] !== "Rest Timer";
+      })
+      .map((result: any) => {
+        return {
+          Date: result.Date,
+          Duration: result["Seconds"],
+          Name: result["Exercise Name"],
+          Notes: result.Notes,
+          Reps: result.Reps,
+          SetOrder: result["Set Order"],
+          Weight: result["Weight (kg)"],
+          WorkoutNr: result["Workout #"],
+          WorkoutName: result["Workout Name"],
+          WorkoutNotes: result["Workout Notes"],
+        };
+      });
+    return transformedData as ParsedResultData[];
+  };
+
   const handleUploadFile = (e) => {
     const file = e?.target?.files[0];
 
     if (file) {
       Papa.parse(file, {
         header: true,
+        dynamicTyping: true, // Convert numbers automatically
         skipEmptyLines: true,
         complete: function (results) {
-          const modifiedResults = results?.data
-            ?.filter((result) => {
-              return result["Set Order"] !== "Rest Timer";
-            })
-            .map((result: any) => {
-              return {
-                Date: result.Date,
-                Name: result["Exercise Name"],
-                Notes: result.Notes,
-                Reps: result.Reps,
-                SetOrder: result["Set Order"],
-                Weight: result["Weight (kg)"],
-                WorkoutNr: result["Workout #"],
-                WorkoutName: result["Workout Name"],
-                WorkoutNotes: result["Workout Notes"],
-              };
-            });
+          const modifiedResults = modifyParsedCSV(results);
+          setUploadedFileDate(file.lastModifiedDate);
           setParsedCsv(modifiedResults);
           const allWorkoutDates = modifiedResults.map(
             (row: ParsedResultData) => row.Date.split(" ")[0],
           );
           const uniqueWorkoutDates = [...new Set(allWorkoutDates)];
           setUniqueDates(uniqueWorkoutDates);
-          setUploadSuccessful(true);
-          console.log('SEY');
+
+          setTimeout(() => {
+            setUploadSuccessful(true);
+          }, 500);
+
           setCurrentDataType("real");
         },
         error: function (err, file) {
@@ -141,15 +156,66 @@ function App() {
     setCurrentDataType("mock");
   };
 
+  useEffect(() => {
+    if (currentDataType === "mock") {
+      setParsedCsv(MOCK_DATA);
+      const allWorkoutDates = MOCK_DATA.map(
+        (row: ParsedResultData) => row.Date.split(" ")[0],
+      );
+      const uniqueWorkoutDates = [...new Set(allWorkoutDates)];
+      setUniqueDates(uniqueWorkoutDates);
+    }
+  }, [currentDataType]);
   return (
     <>
-    {currentDataType && <p className="mockData-label">Using {currentDataType} data</p>}
+      {noDataType && (
+        <>
+          <h1>Custom simple analytics for Strong-app data</h1>
+          <h2>Welcome !</h2>
+          <p>
+            This is a very lightweight and straightforward web app. You can
+            either{" "}
+            <CustomUploadBtn
+              defaultLabel={"upload"}
+              isSuccessfulUpload={uploadSuccessful}
+              onChangeFunction={handleUploadFile}
+              className="input--style-text"
+            />{" "}
+            your exported .csv file to see your own data, or you can use the{" "}
+            <button onClick={handleUseMockData} className="text-button">
+              mock data
+            </button>
+            .
+          </p>
+          <p>
+            I made this because I kept forgetting when was the last time I
+            raised my weights for a given excercise.
+          </p>
+          <p>This simple web app is using react-calendar and ChartJS</p>
+        </>
+      )}
+      {currentDataType && (
+        <div className="dataType-container">
+          <div className="dataType-label">
+            <p>Using {currentDataType} data</p>
+            <Icon icon="menu" onClickFunction={handleOpenMenu} />
+          </div>
+          <div className="dataType-menu">
+            <button onClick={() => handleSwitchDataType(currentDataType)}>
+              Use {currentDataType === "mock" ? "real" : "mock"} data instead
+            </button>
+          </div>
+        </div>
+      )}
       <div className="chart-excercise-container">
         {uniqueDates.length > 0 && uniqueExercises.length > 0 && (
-          <div className="select-container">
+          <div
+            className={`select-container ${hasSelectedExcercise ? "select-container--with-chart" : ""}`}
+          >
             <label>
-              Select an Exercise: <br />
-              <span className="smaller-text">(can choose more than 1)</span>
+              Select an Exercise from{" "}
+              {currentDataType === "mock" ? "mock data" : "real data"}:<br />
+              <span className="smaller-text">(can choose multiple)</span>
             </label>
             <select
               onChange={(event) => handleChange(event)}
@@ -171,7 +237,7 @@ function App() {
             </select>
           </div>
         )}
-        {parsedCsv.length > 0 && selectedExercise?.length > 0 && (
+        {parsedCsv.length > 0 && hasSelectedExcercise && (
           <>
             <div className="chart-container">
               <Chart
@@ -183,11 +249,8 @@ function App() {
         )}
       </div>
       <div className="card">
-        {parsedCsv.length > 0 && selectedExercise?.length > 0 && (
-          <WorkoutCalendar
-            uniqueDates={uniqueDates}
-            workoutData={parsedCsv}
-          />
+        {parsedCsv.length > 0 && hasSelectedExcercise && (
+          <WorkoutCalendar uniqueDates={uniqueDates} workoutData={parsedCsv} />
         )}
         {lastSaved && !saveNew ? (
           <>
@@ -207,55 +270,65 @@ function App() {
                 accept=".csv"
               />
             </label>
-          </>
-        ) : (
-          <>
-            <p>No previously saved file detected.</p>
-            <div className="upload-container">
-              <span>Upload a .CSV file exported by Strong App</span>
-              <img
-                src="/src/assets/arrow_down.png"
-                alt="Success"
-                className="arrow-icon"
-              />
-            </div>
-            <label className="input-hidden-label input-new">
-              {uploadSuccessful ? "Uploaded" : "Upload"}
-              <input
-                type="file"
-                id="csvFile"
-                className="input-hidden"
-                onChange={handleUploadFile}
-                accept=".csv"
-              />
-            </label>
             {uploadSuccessful && (
               <>
-                <img
-                  src="/src/assets/check_success.png"
-                  alt="Success"
-                  className="success-icon"
-                />
+                <Icon icon="success" />
                 <p>Want to save the uploaded .csv file to the browser?</p>
                 <button onClick={handleSave}>
                   {saveNew ? "File saved!" : "Save the file"}
                 </button>
-                {saveNew && (
-                  <img
-                    src="/src/assets/check_success.png"
-                    alt="Success"
-                    className="success-icon"
+                {saveNew && <Icon icon="success" />}
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            {currentDataType !== "mock" && (
+              <>
+                <p>No previously saved file detected.</p>
+                <div className="upload-container">
+                  <span>Upload a .CSV file exported by Strong App</span>
+                  <Icon icon="arrowDown" />
+                </div>
+                <CustomUploadBtn
+                  defaultLabel={"Upload"}
+                  isSuccessfulUpload={uploadSuccessful}
+                  onChangeFunction={handleUploadFile}
+                  className="input-new"
+                />
+                <>
+                  <CustomUploadBtn
+                    defaultLabel={"Upload multiple"}
+                    isSuccessfulUpload={uploadSuccessful}
+                    onChangeFunction={handleMultipleUploadFiles}
+                    isMultiple
+                    className="input-new"
                   />
+                </>
+                {uploadSuccessful && (
+                  <>
+                    <Icon icon="success" />
+                    <p>Want to save the uploaded .csv file to the browser?</p>
+                    <button onClick={handleSave}>
+                      {saveNew ? "File saved!" : "Save the file"}
+                    </button>
+                    {saveNew && <Icon icon="success" />}
+                  </>
                 )}
               </>
             )}
           </>
         )}
       </div>
-      <>
-        <p>Want to try it out with mock data?</p>
-        <button onClick={handleUseMockData}>Use mock data</button>
-      </>
+      {noDataType && (
+        <div className="mockData-container">
+          <p>
+            Want to try it out <br />
+            with mock data {currentDataType === "real" && "instead"}?
+          </p>
+          <button onClick={handleUseMockData}>Use mock data</button>
+        </div>
+      )}
     </>
   );
 }

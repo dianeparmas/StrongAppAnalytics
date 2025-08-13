@@ -18,6 +18,7 @@ export interface ParsedResultWithMeta {
 
 export interface ParsedResultData {
   Date: string;
+  Duration: null | string;
   Name: string;
   Notes: string;
   Reps: string;
@@ -32,6 +33,11 @@ export interface WorkoutCalendarProps {
   uniqueDates: string[];
   workoutData: ParsedResultData[];
 }
+
+export interface ChartProps {
+  chartData: ParsedResultData[];
+  selectedExercises: string[];
+};
 
 export interface CustomUploadBtnProps {
   className?: string;
