@@ -1,0 +1,39 @@
+.down-arrow-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.menu-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 0.3125rem;
+}
+
+.menu-icon:hover {
+  cursor: pointer;
+}
+
+.new-tab-icon {
+    width: 1rem;
+}
+
+.success-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 1rem;
+  animation: bounceIn 0.5s ease-in-out forwards;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}

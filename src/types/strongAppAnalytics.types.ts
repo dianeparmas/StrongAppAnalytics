@@ -1,3 +1,9 @@
+export interface AppState {
+  showSaveSuccess: boolean;
+  showUploadSuccess: boolean;
+  showFileComponent: boolean;
+}
+
 export interface ParsedResult {
   data: ParsedResultData[];
   errors: [];
@@ -5,7 +11,7 @@ export interface ParsedResult {
 }
 
 export interface ParsedResultWithMeta {
-  data: ParsedResultData[];
+  data: rawCsvData[];
   errors: [];
   meta: {
     delimiter: string;
@@ -16,13 +22,29 @@ export interface ParsedResultWithMeta {
   };
 }
 
+export interface rawCsvData {
+  "Date": string;
+  "Distance (meters)": number;
+  "Duration (sec)": number;
+  "Exercise Name": string;
+  "Notes": string;
+  "RPE": number;
+  "Reps": number;
+  "Seconds": number;
+  "Set Order": number | string;
+  "Weight (kg)": number;
+  "Workout #": number;
+  "Workout Name": string;
+  "Workout Notes": string;
+}
+
 export interface ParsedResultData {
   Date: string;
-  Duration: null | string;
+  Duration?: null | string;
   Name: string;
   Notes: string;
   Reps: string;
-  SetOrder: string;
+  SetOrder: number | string;
   Weight: string;
   WorkoutNr: string;
   WorkoutName: string;
@@ -37,12 +59,18 @@ export interface WorkoutCalendarProps {
 export interface ChartProps {
   chartData: ParsedResultData[];
   selectedExercises: string[];
-};
+}
 
-export interface CustomUploadBtnProps {
+export interface SelectProps {
+  currentDataType: string;
+  uniqueExercises: string[];
+  onChangeFunction: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChangeFunctionSingle: (value: string) => void;
+}
+
+export interface UploadBtnProps {
   className?: string;
   defaultLabel?: string;
-  isMultiple?: boolean;
   isSuccessfulUpload: boolean;
   onChangeFunction: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

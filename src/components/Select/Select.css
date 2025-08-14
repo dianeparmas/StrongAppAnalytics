@@ -1,0 +1,7 @@
+select.no-arrow {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+  padding: 5px;
+}

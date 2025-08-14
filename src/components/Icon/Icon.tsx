@@ -1,5 +1,7 @@
 import { IconProps } from "../../types/strongAppAnalytics.types";
 
+import "./Icon.css";
+
 const Icon = ({ icon, onClickFunction }: IconProps) => {
   let path;
   let alt;
@@ -16,6 +18,10 @@ const Icon = ({ icon, onClickFunction }: IconProps) => {
     case "success":
       path = "/src/assets/check_success.png";
       alt = "success icon";
+      break;
+    case "newTab":
+      path = "/src/assets/new_tab.png";
+      alt = "new tab icon";
       break;
     default:
       path = "";

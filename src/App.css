@@ -36,7 +36,7 @@
   top: 58px;
 }
 
-.card {
+.content {
   padding: 2em;
 }
 
@@ -47,44 +47,8 @@
   width: 100%;
 }
 
-.success-icon {
-  width: 24px;
-  height: 24px;
-  margin-left: 1rem;
-  animation: bounceIn 0.5s ease-in-out forwards;
-}
-
-@keyframes bounceIn {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 .checkmark-animated {
   animation: bounceIn 0.5s ease-in-out forwards;
-}
-
-.down-arrow-icon {
-  width: 24px;
-  height: 24px;
-}
-
-.menu-icon {
-  width: 24px;
-  height: 24px;
-  margin-left: 0.3125rem;
-}
-
-.menu-icon:hover {
-  cursor: pointer;
 }
 
 .dataType-menu {
@@ -111,14 +75,10 @@
 }
 
 .select-container {
-  display: flex;
-  align-items: start;
-  gap: 1rem;
-  width: 100%;
 }
 
 .select-container > label {
-  flex-grow: 1;
+  display: block;
 }
 
 .select-container--with-chart {
@@ -130,64 +90,6 @@
   font-size: 0.8em;
 }
 
-.input-hidden {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  filter: alpha(opacity=0);
-  opacity: 0;
-  outline: none;
-  background: white;
-  cursor: inherit;
-  display: block;
-  left: 0;
-  bottom: 0;
-}
-
-.input-hidden-label {
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  background-color: #f9f9f9;
-  margin-left: 2rem;
-}
-
-.input-new:hover {
-  cursor: pointer;
-}
-
-.input--style-text {
-  background: none;
-  padding: 0;
-  margin: 0;
-  border: none;
-  color: rgb(33, 53, 71);
-  font-weight: normal;
-  text-decoration: underline;
-}
-
-.input--style-text > .input-hidden {
-  display: none;
-}
-
-.input--style-text:hover {
-  cursor: pointer;
-  color: rgb(56 150 233);
-}
-
-.input-new {
-  margin: 0;
-}
-
 .upload-container {
   margin-bottom: 2rem;
   display: flex;
@@ -195,8 +97,6 @@
 }
 
 .chart-excercise-container {
-  display: flex;
-  align-items: center;
   margin-top: 2rem;
 }
 
@@ -211,3 +111,4 @@
 .text-button:hover {
   color: rgb(56 150 233);
 }
+

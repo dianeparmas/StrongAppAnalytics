@@ -3,14 +3,19 @@ import { useEffect, useMemo, useState } from "react";
 import Papa from "papaparse";
 
 import Chart from "./components/Chart/Chart";
-import CustomUploadBtn from "./components/CustomUploadBtn/CustomUploadBtn";
 import Icon from "./components/Icon/Icon";
+import Select from "./components/Select/Select.tsx";
+import UploadBtn from "./components/UploadBtn/UploadBtn";
 import WorkoutCalendar from "./components/WorkoutCalendar/WorkoutCalendar";
 
 import {
   ParsedResult,
   ParsedResultData,
 } from "./types/strongAppAnalytics.types";
+
+import { useCsvUpload } from "./hooks/useCsvUpload";
+import { useDataLoader } from "./hooks/useDataLoader.ts";
+import { useFileActions } from "./hooks/useFileActions";
 
 import MOCK_DATA from "./constants/mockData.tsx";
 
@@ -107,12 +112,17 @@ function App() {
     );
   };
 
+  const handleChangeSingle = (value: string) => {
+    setSelectedExercise([value]);
+  };
+
   const checkLocalStorage = () => {
     const savedData = localStorage.getItem("StrongAppCSV");
     if (savedData) {
       const parsedData = JSON.parse(savedData);
-      const savedDate = new Date(parsedData.savedAt);
+      const savedDate = new Date(parsedData.storedAt);
       setLastSaved(savedDate);
+      setFileLastModifiedDate(new Date(parsedData?.fileSaved));
     }
   };
 
@@ -120,11 +130,18 @@ function App() {
     console.log("handlesave fn");
     const payload = {
       data: JSON.stringify(parsedCsv),
-      savedAt: new Date().toISOString(),
+      storedAt: new Date().toISOString(),
+      fileSaved: fileLastModifiedDate?.toISOString(),
     };
 
     localStorage.setItem("StrongAppCSV", JSON.stringify(payload));
-    setSaveNew(true);
+    // setSaveNew(true);
+    setAppState((prevState) => ({ ...prevState, showSaveSuccess: true }));
+  };
+
+  const handleDelete = () => {
+    localStorage.removeItem("StrongAppCSV");
+    setDeleteFile(true);
   };
 
   const handleUseExistingFile = () => {
@@ -137,7 +154,7 @@ function App() {
       });
       setParsedCsv(cleanedData);
     }
-    console.log('handleuse fn', parsedCsv);
+    console.log("handleuse fn", parsedCsv);
     const allWorkoutDates = cleanedData.map(
       (row: ParsedResultData) => row.Date.split(" ")[0],
     );
@@ -170,12 +187,21 @@ function App() {
     <>
       {noDataType && (
         <>
-          <h1>Custom simple analytics for Strong-app data</h1>
+          <h1>
+            Custom simple analytics for{" "}
+            <a target="_blank" href="https://www.strong.app/">
+              Strong-app
+              <sup>
+                <Icon icon="newTab" />
+              </sup>
+            </a>{" "}
+            data
+          </h1>
           <h2>Welcome !</h2>
           <p>
             This is a very lightweight and straightforward web app. You can
             either{" "}
-            <CustomUploadBtn
+            <UploadBtn
               defaultLabel={"upload"}
               isSuccessfulUpload={uploadSuccessful}
               onChangeFunction={handleUploadFile}
@@ -185,13 +211,13 @@ function App() {
             <button onClick={handleUseMockData} className="text-button">
               mock data
             </button>
-            .
+            .<br />I made this because I kept forgetting when was the last time
+            I raised my weights for a given excercise or how long I'd been using
+            the same weight.
           </p>
           <p>
-            I made this because I kept forgetting when was the last time I
-            raised my weights for a given excercise.
+            This simple web app is using react-calendar, papa parse and ChartJS
           </p>
-          <p>This simple web app is using react-calendar and ChartJS</p>
         </>
       )}
       {currentDataType && (
@@ -212,64 +238,50 @@ function App() {
           <div
             className={`select-container ${hasSelectedExcercise ? "select-container--with-chart" : ""}`}
           >
-            <label>
-              Select an Exercise from{" "}
-              {currentDataType === "mock" ? "mock data" : "real data"}:<br />
-              <span className="smaller-text">(can choose multiple)</span>
-            </label>
-            <select
-              onChange={(event) => handleChange(event)}
-              multiple={true}
-              defaultValue={[
-                "Bench Press (Dumbbell)",
-                "Strict Military Press (Barbell)",
-              ]}
-              size={6}
-            >
-              <option key={"None"} value={"None"}>
-                {"None"}
-              </option>
-              {uniqueExercises.map((exerciseName) => (
-                <option key={exerciseName} value={exerciseName}>
-                  {exerciseName}
-                </option>
-              ))}
-            </select>
+            <Select
+              currentDataType={currentDataType}
+              uniqueExercises={uniqueExercises}
+              onChangeFunction={handleChange}
+              onChangeFunctionSingle={handleChangeSingle}
+            />
           </div>
         )}
-        {parsedCsv.length > 0 && hasSelectedExcercise && (
-          <>
-            <div className="chart-container">
-              <Chart
-                chartData={parsedCsv}
-                selectedExercises={selectedExercise}
-              />
-            </div>
-          </>
+        {hasDataSelected && (
+          <div className="chart-container">
+            <Chart chartData={parsedCsv} selectedExercises={selectedExercise} />
+          </div>
         )}
       </div>
-      <div className="card">
-        {parsedCsv.length > 0 && hasSelectedExcercise && (
+      <div className="content">
+        {hasDataSelected && (
           <WorkoutCalendar uniqueDates={uniqueDates} workoutData={parsedCsv} />
         )}
         {lastSaved && !saveNew ? (
           <>
             <p>
-              Detecting a file last saved at {lastSaved.toLocaleString()} (local
-              time).
+              Detecting a saved file:
+              <ul>
+                <li>
+                  last saved in App at {lastSaved.toLocaleString()} (local time)
+                </li>
+                <li>
+                  last modified by User at{" "}
+                  {fileLastModifiedDate.toLocaleString()} (local time)
+                </li>
+              </ul>
             </p>
             <p>Would you like to use that file or upload a new one?</p>
-            <button onClick={handleUseExistingFile}>Use this file</button>
-            <label className="input-hidden-label">
-              Upload a new file
-              <input
-                type="file"
-                id="csvFile"
-                className="input-hidden"
-                onChange={handleUploadFile}
-                accept=".csv"
-              />
-            </label>
+            <button
+              // onClick={handleUseExistingFile}
+              onClick={loadExistingFile}
+            >
+              Use this file
+            </button>
+            <UploadBtn
+              defaultLabel={"Upload new file"}
+              isSuccessfulUpload={uploadSuccessful}
+              onChangeFunction={handleUploadFile}
+            />
             {uploadSuccessful && (
               <>
                 <Icon icon="success" />
@@ -280,39 +292,54 @@ function App() {
                 {saveNew && <Icon icon="success" />}
               </>
             )}
+            <button onClick={handleDelete}>
+              {deleteFile ? "File deleted!" : "Delete the saved file"}
+            </button>
+            {deleteFile && <Icon icon="success" />}
           </>
         ) : (
           <>
             {currentDataType !== "mock" && (
               <>
-                <p>No previously saved file detected.</p>
-                <div className="upload-container">
-                  <span>Upload a .CSV file exported by Strong App</span>
-                  <Icon icon="arrowDown" />
-                </div>
-                <CustomUploadBtn
-                  defaultLabel={"Upload"}
+                {parsedCsv.length === 0 && (
+                  <>
+                    <p>No previously saved file detected.</p>
+                    <div className="upload-container">
+                      <span>Upload a .csv file exported by Strong App</span>
+                      <Icon icon="arrowDown" />
+                    </div>
+                  </>
+                )}
+                {/* <UploadBtn
+                  defaultLabel={"Upload file"}
                   isSuccessfulUpload={uploadSuccessful}
                   onChangeFunction={handleUploadFile}
                   className="input-new"
+                /> */}
+                <UploadBtn
+                  defaultLabel={"Upload file"}
+                  isSuccessfulUpload={appState.showUploadSuccess}
+                  onChangeFunction={handleUploadFile}
+                  className="input-new"
                 />
-                <>
-                  <CustomUploadBtn
-                    defaultLabel={"Upload multiple"}
-                    isSuccessfulUpload={uploadSuccessful}
-                    onChangeFunction={handleMultipleUploadFiles}
-                    isMultiple
-                    className="input-new"
-                  />
-                </>
-                {uploadSuccessful && (
+                {/* {appState.showUploadSuccess && (
                   <>
                     <Icon icon="success" />
                     <p>Want to save the uploaded .csv file to the browser?</p>
                     <button onClick={handleSave}>
-                      {saveNew ? "File saved!" : "Save the file"}
+                      {appState.showSaveSuccess ? "File saved!" : "Save file"}
                     </button>
-                    {saveNew && <Icon icon="success" />}
+                    {appState.showSaveSuccess && <Icon icon="success" />}
+                  </>
+                )} */}
+                {uploadSuccessful && (
+                  <>
+                    {appState.showUploadSuccess && <Icon icon="success" />}
+                    <p>Want to save the uploaded .csv file to the browser?</p>
+                    <button onClick={handleSave}>
+                      {appState.showSaveSuccess ? "File saved!" : "Save file"}
+                    </button>
+                    {appState.showSaveSuccess && <Icon icon="success" />}
                   </>
                 )}
               </>
