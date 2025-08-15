@@ -71,8 +71,21 @@ export interface SelectProps {
 export interface UploadBtnProps {
   className?: string;
   defaultLabel?: string;
+  keepLabel?: boolean;
   isSuccessfulUpload: boolean;
   onChangeFunction: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface WelcomeScreenProps {
+  uploadSuccessful: boolean;
+  handleUploadFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleUseMockData: () => void;
+}
+
+export interface MenuProps {
+  currentDataType: string;
+  handleUseMockData: () => void;
+  handleSwitchDataType: (value: string) => void;
 }
 
 export interface IconProps {

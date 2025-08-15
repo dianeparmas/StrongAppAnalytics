@@ -4,4 +4,5 @@ select.no-arrow {
   -moz-appearance: none;
   background-image: none;
   padding: 5px;
+  pointer-events: none;
 }

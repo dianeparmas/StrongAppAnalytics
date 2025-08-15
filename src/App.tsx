@@ -4,8 +4,10 @@ import Papa from "papaparse";
 
 import Chart from "./components/Chart/Chart";
 import Icon from "./components/Icon/Icon";
+import Menu from "./components/Menu/Menu.tsx";
 import Select from "./components/Select/Select.tsx";
 import UploadBtn from "./components/UploadBtn/UploadBtn";
+import WelcomeScreen from "./components/WelcomeScreen/WelcomeScreen";
 import WorkoutCalendar from "./components/WorkoutCalendar/WorkoutCalendar";
 
 import {
@@ -17,6 +19,7 @@ import { useCsvUpload } from "./hooks/useCsvUpload";
 import { useDataLoader } from "./hooks/useDataLoader.ts";
 import { useFileActions } from "./hooks/useFileActions";
 
+import DATA_TYPE from "./constants/dataType.ts";
 import MOCK_DATA from "./constants/mockData.tsx";
 
 import "./App.css";
@@ -186,53 +189,17 @@ function App() {
   return (
     <>
       {noDataType && (
-        <>
-          <h1>
-            Custom simple analytics for{" "}
-            <a target="_blank" href="https://www.strong.app/">
-              Strong-app
-              <sup>
-                <Icon icon="newTab" />
-              </sup>
-            </a>{" "}
-            data
-          </h1>
-          <h2>Welcome !</h2>
-          <p>
-            This is a very lightweight and straightforward web app. You can
-            either{" "}
-            <UploadBtn
-              defaultLabel={"upload"}
-              isSuccessfulUpload={uploadSuccessful}
-              onChangeFunction={handleUploadFile}
-              className="input--style-text"
-            />{" "}
-            your exported .csv file to see your own data, or you can use the{" "}
-            <button onClick={handleUseMockData} className="text-button">
-              mock data
-            </button>
-            .<br />I made this because I kept forgetting when was the last time
-            I raised my weights for a given excercise or how long I'd been using
-            the same weight.
-          </p>
-          <p>
-            This simple web app is using react-calendar, papa parse and ChartJS
-          </p>
-        </>
+        <WelcomeScreen
+          uploadSuccessful={uploadSuccessful}
+          handleUploadFile={handleUploadFile}
+          handleUseMockData={handleUseMockData}
+        />
       )}
-      {currentDataType && (
-        <div className="dataType-container">
-          <div className="dataType-label">
-            <p>Using {currentDataType} data</p>
-            <Icon icon="menu" onClickFunction={handleOpenMenu} />
-          </div>
-          <div className="dataType-menu">
-            <button onClick={() => handleSwitchDataType(currentDataType)}>
-              Use {currentDataType === "mock" ? "real" : "mock"} data instead
-            </button>
-          </div>
-        </div>
-      )}
+      <Menu
+        currentDataType={currentDataType}
+        handleUseMockData={handleUseMockData}
+        handleSwitchDataType={handleSwitchDataType}
+      />
       <div className="chart-excercise-container">
         {uniqueDates.length > 0 && uniqueExercises.length > 0 && (
           <div
@@ -347,15 +314,6 @@ function App() {
           </>
         )}
       </div>
-      {noDataType && (
-        <div className="mockData-container">
-          <p>
-            Want to try it out <br />
-            with mock data {currentDataType === "real" && "instead"}?
-          </p>
-          <button onClick={handleUseMockData}>Use mock data</button>
-        </div>
-      )}
     </>
   );
 }

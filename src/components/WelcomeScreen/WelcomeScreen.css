@@ -1,0 +1,11 @@
+.text-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.text-button:hover {
+  color: rgb(56 150 233);
+}

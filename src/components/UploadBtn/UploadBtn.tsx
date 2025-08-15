@@ -7,10 +7,11 @@ const UploadBtn = ({
   defaultLabel,
   isSuccessfulUpload,
   onChangeFunction,
+  keepLabel,
 }: UploadBtnProps) => {
   return (
     <label className={`input-hidden-label ${className}`}>
-      {isSuccessfulUpload ? "File Uploaded" : defaultLabel}
+      {isSuccessfulUpload && !keepLabel ? "File Uploaded" : defaultLabel}
       <input
         type="file"
         id="csvFile"
