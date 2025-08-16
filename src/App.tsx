@@ -5,6 +5,7 @@ import Papa from "papaparse";
 import Chart from "./components/Chart/Chart";
 import Icon from "./components/Icon/Icon";
 import Menu from "./components/Menu/Menu.tsx";
+import SavedFilePrompt from "./components/SavedFilePrompt/SavedFilePrompt.tsx";
 import Select from "./components/Select/Select.tsx";
 import UploadBtn from "./components/UploadBtn/UploadBtn";
 import WelcomeScreen from "./components/WelcomeScreen/WelcomeScreen";
@@ -20,7 +21,7 @@ import { useDataLoader } from "./hooks/useDataLoader.ts";
 import { useFileActions } from "./hooks/useFileActions";
 
 import DATA_TYPE from "./constants/dataType.ts";
-import MOCK_DATA from "./constants/mockData.tsx";
+import MOCK_DATA from "./constants/mockData.ts";
 
 import "./App.css";
 
@@ -199,6 +200,8 @@ function App() {
         currentDataType={currentDataType}
         handleUseMockData={handleUseMockData}
         handleSwitchDataType={handleSwitchDataType}
+        lastSaved={lastSaved}
+        handleUploadFile={handleUploadFile}
       />
       <div className="chart-excercise-container">
         {uniqueDates.length > 0 && uniqueExercises.length > 0 && (
@@ -224,49 +227,23 @@ function App() {
           <WorkoutCalendar uniqueDates={uniqueDates} workoutData={parsedCsv} />
         )}
         {lastSaved && !saveNew ? (
-          <>
-            <p>
-              Detecting a saved file:
-              <ul>
-                <li>
-                  last saved in App at {lastSaved.toLocaleString()} (local time)
-                </li>
-                <li>
-                  last modified by User at{" "}
-                  {fileLastModifiedDate.toLocaleString()} (local time)
-                </li>
-              </ul>
-            </p>
-            <p>Would you like to use that file or upload a new one?</p>
-            <button
-              // onClick={handleUseExistingFile}
-              onClick={loadExistingFile}
-            >
-              Use this file
-            </button>
-            <UploadBtn
-              defaultLabel={"Upload new file"}
+          !deleteFile && (
+            <SavedFilePrompt
               isSuccessfulUpload={uploadSuccessful}
-              onChangeFunction={handleUploadFile}
+              handleUploadFile={handleUploadFile}
+              lastSaved={lastSaved}
+              fileLastModifiedDate={fileLastModifiedDate}
+              loadExistingFile={loadExistingFile}
+              handleSave={handleSave}
+              saveNew={saveNew}
+              handleDelete={handleDelete}
+              deleteFile={deleteFile}
+              currentDataType={currentDataType}
             />
-            {uploadSuccessful && (
-              <>
-                <Icon icon="success" />
-                <p>Want to save the uploaded .csv file to the browser?</p>
-                <button onClick={handleSave}>
-                  {saveNew ? "File saved!" : "Save the file"}
-                </button>
-                {saveNew && <Icon icon="success" />}
-              </>
-            )}
-            <button onClick={handleDelete}>
-              {deleteFile ? "File deleted!" : "Delete the saved file"}
-            </button>
-            {deleteFile && <Icon icon="success" />}
-          </>
+          )
         ) : (
           <>
-            {currentDataType !== "mock" && (
+            {currentDataType !== DATA_TYPE.MOCK && (
               <>
                 {parsedCsv.length === 0 && (
                   <>

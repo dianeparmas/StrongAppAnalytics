@@ -11,9 +11,11 @@
   display: block;
   left: 0;
   bottom: 0;
+  cursor: pointer;
 }
 
-.input-hidden:hover {
+.input-hidden:hover,
+.input-hidden-label:hover {
   cursor: pointer;
 }
 

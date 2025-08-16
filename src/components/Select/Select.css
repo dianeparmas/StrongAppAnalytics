@@ -6,3 +6,8 @@ select.no-arrow {
   padding: 5px;
   pointer-events: none;
 }
+
+.select-container select * {
+  font-size: 1rem;
+  padding: 5px;
+}

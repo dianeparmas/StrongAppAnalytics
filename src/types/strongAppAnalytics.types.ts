@@ -23,14 +23,14 @@ export interface ParsedResultWithMeta {
 }
 
 export interface rawCsvData {
-  "Date": string;
+  Date: string;
   "Distance (meters)": number;
   "Duration (sec)": number;
   "Exercise Name": string;
-  "Notes": string;
-  "RPE": number;
-  "Reps": number;
-  "Seconds": number;
+  Notes: string;
+  RPE: number;
+  Reps: number;
+  Seconds: number;
   "Set Order": number | string;
   "Weight (kg)": number;
   "Workout #": number;
@@ -72,7 +72,7 @@ export interface UploadBtnProps {
   className?: string;
   defaultLabel?: string;
   keepLabel?: boolean;
-  isSuccessfulUpload: boolean;
+  isSuccessfulUpload?: boolean;
   onChangeFunction: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -84,11 +84,26 @@ export interface WelcomeScreenProps {
 
 export interface MenuProps {
   currentDataType: string;
+  handleUploadFile: () => void;
   handleUseMockData: () => void;
   handleSwitchDataType: (value: string) => void;
+  lastSaved: string | Date;
 }
 
 export interface IconProps {
   icon: string;
   onClickFunction?: () => void;
+}
+
+export interface SavedFilePromptProps {
+  isSuccessfulUpload: boolean;
+  handleUploadFile: () => void;
+  lastSaved: Date;
+  fileLastModifiedDate: Date;
+  loadExistingFile: () => void;
+  handleSave: () => void;
+  saveNew: boolean;
+  handleDelete: () => void;
+  deleteFile: boolean;
+  currentDataType: string;
 }

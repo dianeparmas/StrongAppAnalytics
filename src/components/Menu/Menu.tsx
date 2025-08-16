@@ -1,6 +1,7 @@
 import { MenuProps } from "../../types/strongAppAnalytics.types";
 
 import Icon from "../Icon/Icon";
+import UploadBtn from "../UploadBtn/UploadBtn";
 
 import DATA_TYPE from "../../constants/dataType";
 
@@ -8,8 +9,10 @@ import "./Menu.css";
 
 const Menu = ({
   currentDataType,
+  handleUploadFile,
   handleUseMockData,
   handleSwitchDataType,
+  lastSaved,
 }: MenuProps) => {
   const isRealData = currentDataType === DATA_TYPE.REAL;
 
@@ -21,21 +24,37 @@ const Menu = ({
   };
 
   return currentDataType ? (
-    <div className="dataType-container">
-      <div className="dataType-label">
+    <div className={`dataType-container ${currentDataType}-data`}>
+      <div className={`dataType-label ${currentDataType}-data`}>
         <p>Using {currentDataType} data</p>
         <Icon icon="menu" onClickFunction={handleOpenMenu} />
       </div>
-      <div className="dataType-menu">
-        <button onClick={() => handleSwitchDataType(currentDataType)}>
-          Use {isRealData ? DATA_TYPE.MOCK : DATA_TYPE.REAL} data instead
-        </button>
-      </div>
+      {currentDataType && (
+        <div className="dataType-menu">
+          {!isRealData && !lastSaved && (
+            <UploadBtn
+              defaultLabel={"Use real data"}
+              onChangeFunction={handleUploadFile}
+              className="input-new"
+            />
+          )}
+          {(!isRealData && lastSaved) || isRealData ? (
+            <button
+              className="hidden"
+              onClick={() => handleSwitchDataType(currentDataType)}
+            >
+              {isRealData
+                ? `Use ${DATA_TYPE.MOCK} data`
+                : `Use ${DATA_TYPE.REAL} data`}
+            </button>
+          ) : null}
+        </div>
+      )}
     </div>
   ) : (
     <div className="mockData-container">
       <Icon icon="menu" />
-      <div>
+      <div className="hidden">
         <p>
           Want to try it out <br />
           with mock data {isRealData && "instead"}?

@@ -9,3 +9,7 @@
 .text-button:hover {
   color: rgb(56 150 233);
 }
+
+.smaller-text {
+  font-size: 0.8em;
+}

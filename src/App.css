@@ -20,7 +20,8 @@
   animation: bounceIn 0.5s ease-in-out forwards;
 }
 
-.select-container {
+.select-container:not(.select-container--with-chart) select {
+  width: 100%;
 }
 
 .select-container > label {
@@ -44,4 +45,8 @@
 
 .chart-excercise-container {
   margin-top: 2rem;
+}
+
+.savedFile-data {
+  list-style: none;
 }

@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  transition: all 2s linear 1s;
+  /* transition: all 2s linear 1s; */
 }
 .dataType-label {
   display: flex;
@@ -40,6 +40,7 @@
   box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.31);
   -webkit-box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.31);
   -moz-box-shadow: 4px 3px 5px 0px rgba(0, 0, 0, 0.31);
+  width: 100%;
 }
 .mockData-container {
   position: fixed;
@@ -47,36 +48,65 @@
   padding: 0.5rem;
   background: #efef14;
   text-align: center;
-  top: 58px;
+  /* top: 58px; */
+  top: 0;
   width: 46px;
   height: 46px;
   box-sizing: border-box;
 }
 
+.real-data {
+  background: #34a853;
+}
+
 .mockData-container div {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    transform: translateY(-50%);
-    transform: translateX(0%);
-    width: 160px;
-    right: 0;
-    background: #efef14;
-    top: 0;
-    padding-bottom: 8px;
-    cursor: default;
+  /* visibility: hidden;
+    opacity: 0; */
+
+  position: absolute;
+  transform: translateY(-50%);
+  transform: translateX(0%);
+  width: 160px;
+  right: 0;
+  background: #efef14;
+  top: 0;
+  padding-bottom: 8px;
+  cursor: default;
+}
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
+}
+.dataType-menu.is-open .hidden {
+  visibility: visible;
+  opacity: 1;
+}
+
+.dataType-menu.is-open button {
+  width: 100%;
 }
 
 .mockData-container:hover div {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
 }
 
 .mockData-container .menu-icon {
-    margin: 0;
+  margin: 0;
 }
 
 .mockData-container:hover .menu-icon {
-    display: none;
+  display: none;
+}
+
+.dataType-menu .input-new {
+  width: 100%;
+  display: block;
+  padding: 0.6em 0;
 }

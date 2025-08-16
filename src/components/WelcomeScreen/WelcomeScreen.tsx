@@ -36,11 +36,14 @@ const WelcomeScreen = ({
         <button onClick={handleUseMockData} className="text-button">
           mock data
         </button>
-        .<br />I made this because I kept forgetting when was the last time I
-        raised my weights for a given excercise or how long I'd been using the
-        same weight.
+        .<br /><br />
+        <span className="smaller-text">
+          I made this because I kept forgetting when was the last time I raised
+          my weights for a given excercise or how long I'd been using the same
+          weight.
+        </span>
       </p>
-      <p>This simple web app is using react-calendar, papa parse and ChartJS</p>
+      <p className="smaller-text">This simple web app is using react-calendar, papa parse and ChartJS</p>
     </>
   );
 };
