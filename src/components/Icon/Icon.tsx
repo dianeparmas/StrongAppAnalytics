@@ -1,8 +1,10 @@
+import { forwardRef } from 'react';
+
 import { IconProps } from "../../types/strongAppAnalytics.types";
 
 import "./Icon.css";
 
-const Icon = ({ icon, onClickFunction }: IconProps) => {
+const Icon = forwardRef<HTMLImageElement, IconProps>(({ icon, onClickFunction, width }: IconProps, ref) => {
   let path;
   let alt;
 
@@ -23,6 +25,10 @@ const Icon = ({ icon, onClickFunction }: IconProps) => {
       path = "/src/assets/new_tab.png";
       alt = "new tab icon";
       break;
+    case "legend":
+      path = "/src/assets/legend.png";
+      alt = "legend icon";
+      break;
     default:
       path = "";
       alt = "icon";
@@ -35,8 +41,10 @@ const Icon = ({ icon, onClickFunction }: IconProps) => {
       alt={alt}
       className={alt.replace(/ /g, "-")}
       {...(onClickFunction && { onClick: onClickFunction })}
+      ref={ref}
+      {...(width && { width: width })}
     />
   );
-};
+});
 
 export default Icon;

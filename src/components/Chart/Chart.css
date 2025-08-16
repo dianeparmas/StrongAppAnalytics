@@ -1,5 +1,13 @@
 select.metric-select {
-    font-size: 1rem;
-    padding: 0.3125rem;
-    margin-left: 0.3125rem;
+  font-size: 1rem;
+  padding: 0.3125rem;
+  margin-left: 0.3125rem;
+}
+
+.chart-container canvas {
+  margin: 20px;
+}
+
+.chart-content {
+  position: relative;
 }

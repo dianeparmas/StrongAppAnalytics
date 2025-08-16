@@ -224,7 +224,7 @@ function App() {
       </div>
       <div className="content">
         {hasDataSelected && (
-          <WorkoutCalendar uniqueDates={uniqueDates} workoutData={parsedCsv} />
+          <WorkoutCalendar uniqueDates={uniqueDates} workoutData={parsedCsv} currentDataType={currentDataType} />
         )}
         {lastSaved && !saveNew ? (
           !deleteFile && (

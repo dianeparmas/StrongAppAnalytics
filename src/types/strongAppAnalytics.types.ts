@@ -52,6 +52,7 @@ export interface ParsedResultData {
 }
 
 export interface WorkoutCalendarProps {
+  currentDataType: string;
   uniqueDates: string[];
   workoutData: ParsedResultData[];
 }
@@ -93,7 +94,14 @@ export interface MenuProps {
 export interface IconProps {
   icon: string;
   onClickFunction?: () => void;
+  width?: number;
 }
+
+export interface ChartTooltipProps {
+  icon: string;
+  onClickFunction?: () => void;
+}
+
 
 export interface SavedFilePromptProps {
   isSuccessfulUpload: boolean;
