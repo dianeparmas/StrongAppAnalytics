@@ -1,25 +1,22 @@
-import { SavedFilePromptProps } from "../../types/strongAppAnalytics.types";
+import { SavedFilePromptProps } from "../../types/SavedFilePrompt.types";
 
-import Icon from "./../Icon/Icon";
-import UploadBtn from "./../UploadBtn/UploadBtn";
+import DATA_TYPE from "../../constants/dataType";
+
+import Button from "../Button/Button";
 
 import "./SavedFilePrompt.css";
 
 const SavedFilePrompt = ({
-  isSuccessfulUpload,
+  currentDataType,
+  fileLastModifiedDate,
   handleUploadFile,
   lastSaved,
-  fileLastModifiedDate,
   loadExistingFile,
-  handleSave,
-  saveNew,
-  handleDelete,
-  deleteFile,
-  currentDataType,
+  parsedCsv,
 }: SavedFilePromptProps) => {
   return (
     <>
-      <p>{`${currentDataType === "real" ? "Using" : "Detecting"} a saved file:`}</p>
+      <p>{`${currentDataType === DATA_TYPE.REAL ? "Using" : "Detecting"} a saved file:`}</p>
       <ul className="savedFile-data">
         <li>last saved in App at {lastSaved.toLocaleString()} (local time)</li>
         <li>
@@ -29,31 +26,15 @@ const SavedFilePrompt = ({
       </ul>
       <p>Would you like to use that file or upload a new one?</p>
       <div className="button-container">
-        <button
-          // onClick={handleUseExistingFile}
-          onClick={loadExistingFile}
-        >
-          Use this file
-        </button>
-        <UploadBtn
-          defaultLabel={"Upload new file"}
-          isSuccessfulUpload={isSuccessfulUpload}
-          onChangeFunction={handleUploadFile}
+        <button onClick={loadExistingFile}>Use this file</button>
+        <Button
+          defaultLabel={"Upload new"}
+          className="input-new"
+          onAction={handleUploadFile}
+          isUploadBtn
+          parsedCsv={parsedCsv}
+          fileLastModifiedDate={fileLastModifiedDate}
         />
-        {isSuccessfulUpload && (
-          <>
-            <Icon icon="success" />
-            <p>Want to save the uploaded .csv file to the browser?</p>
-            <button onClick={handleSave}>
-              {saveNew ? "File saved!" : "Save the file"}
-            </button>
-            {saveNew && <Icon icon="success" />}
-          </>
-        )}
-        <button onClick={handleDelete}>
-          {deleteFile ? "File deleted!" : "Delete the saved file"}
-        </button>
-        {deleteFile && <Icon icon="success" />}
       </div>
     </>
   );

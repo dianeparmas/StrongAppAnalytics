@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  z-index: 100;
   /* transition: all 2s linear 1s; */
 }
 .dataType-label {
@@ -43,6 +44,18 @@
   width: 100%;
   overflow: hidden;
 }
+
+.dataType-menu button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dataType-menu button img {
+  position: absolute;
+  right: 10px;
+}
+
 .mockData-container {
   position: absolute;
   right: 0;

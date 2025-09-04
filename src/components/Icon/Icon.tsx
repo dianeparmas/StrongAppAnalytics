@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 
-import { IconProps } from "../../types/strongAppAnalytics.types";
+import { IconProps } from "../../types/Icon.types";
 
 import "./Icon.css";
 
-const Icon = forwardRef<HTMLImageElement, IconProps>(({ icon, onClickFunction, width }: IconProps, ref) => {
+const Icon = forwardRef<HTMLImageElement, IconProps>(({ icon, onClickFunction, width, height }: IconProps, ref) => {
   let path;
   let alt;
 
@@ -43,6 +43,7 @@ const Icon = forwardRef<HTMLImageElement, IconProps>(({ icon, onClickFunction, w
       {...(onClickFunction && { onClick: onClickFunction })}
       ref={ref}
       {...(width && { width: width })}
+      {...(height && { height: height })}
     />
   );
 });

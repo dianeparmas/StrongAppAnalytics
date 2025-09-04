@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { SelectProps } from "../../types/strongAppAnalytics.types";
+import { SelectProps } from "../../types/Select.types";
 
 import "./Select.css";
 
@@ -36,7 +36,9 @@ const Select = ({
           className={isOneExcercise ? "no-arrow" : ""}
           defaultValue={isOneExcercise ? uniqueExercises[0] : undefined}
         >
-          {uniqueExercises.map((exerciseName) => (
+          {uniqueExercises
+          .sort((a, b) => a.localeCompare(b))
+          .map((exerciseName) => (
             <option key={exerciseName} value={exerciseName}>
               {exerciseName}
             </option>

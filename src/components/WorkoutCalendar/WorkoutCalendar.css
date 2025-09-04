@@ -1,10 +1,14 @@
 .workout-day {
   font-size: 1rem !important;
-  color: #8adf1e;
+  font-weight: bold;
 }
 
 .calendar-container {
   display: flex;
+}
+
+.calendar-container:not(.with-details) {
+  justify-content: center;
 }
 
 .workout-details {

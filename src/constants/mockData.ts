@@ -3,18 +3,18 @@ import { ParsedResultData } from "../types/strongAppAnalytics.types";
 const MOCK_DATA: ParsedResultData[] = [
   {
     Date: "2025-05-01 08:00:00",
-    Name: "Goblet Squat",
-    Notes: "Some notes..",
+    Name: "Mock Squat",
+    Notes: "Here are some notes about this excercise",
     Reps: "12",
     SetOrder: 1,
     Weight: "3",
     WorkoutNr: "1",
     WorkoutName: "Workout Plan 1",
-    WorkoutNotes: "Day 1",
+    WorkoutNotes: "Day 1 workout notes",
   },
   {
     Date: "2025-05-01 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "12",
     SetOrder: 2,
@@ -25,7 +25,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-01 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "10",
     SetOrder: 3,
@@ -136,7 +136,7 @@ const MOCK_DATA: ParsedResultData[] = [
   {
     Date: "2025-05-01 08:00:00",
     Name: "Bench Press",
-    Notes: "",
+    Notes: "Some notes here...",
     Reps: "12",
     SetOrder: 1,
     Weight: "3",
@@ -531,7 +531,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-07 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "10",
     SetOrder: 1,
@@ -542,7 +542,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-07 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "10",
     SetOrder: 2,
@@ -553,7 +553,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-07 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "8",
     SetOrder: 3,
@@ -1059,7 +1059,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-13 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "8",
     SetOrder: 1,
@@ -1070,7 +1070,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-13 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "8",
     SetOrder: 2,
@@ -1081,7 +1081,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-13 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "6",
     SetOrder: 3,
@@ -1587,7 +1587,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-19 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "6",
     SetOrder: 1,
@@ -1598,7 +1598,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-19 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "6",
     SetOrder: 2,
@@ -1609,7 +1609,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-19 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -2115,7 +2115,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-25 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -2126,7 +2126,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-25 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -2137,7 +2137,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-25 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -2643,7 +2643,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-31 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -2654,7 +2654,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-31 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -2665,7 +2665,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-05-31 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -3171,7 +3171,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-06 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "8",
     SetOrder: 1,
@@ -3182,7 +3182,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-06 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "8",
     SetOrder: 2,
@@ -3193,7 +3193,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-06 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "6",
     SetOrder: 3,
@@ -3326,7 +3326,7 @@ const MOCK_DATA: ParsedResultData[] = [
   {
     Date: "2025-06-06 08:00:00",
     Name: "Bench Press",
-    Notes: "",
+    Notes: "Some notes..",
     Reps: "6",
     SetOrder: 3,
     Weight: "19",
@@ -3699,7 +3699,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-12 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "6",
     SetOrder: 1,
@@ -3710,7 +3710,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-12 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "6",
     SetOrder: 2,
@@ -3721,7 +3721,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-12 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -4227,7 +4227,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-18 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -4238,7 +4238,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-18 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -4249,7 +4249,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-18 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -4755,7 +4755,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-24 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -4766,7 +4766,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-24 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -4777,7 +4777,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-24 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -5283,7 +5283,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-30 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -5294,7 +5294,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-30 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -5305,7 +5305,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-06-30 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -5811,7 +5811,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-06 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -5822,7 +5822,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-06 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -5833,7 +5833,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-06 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -6339,7 +6339,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-12 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -6350,7 +6350,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-12 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -6361,7 +6361,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-12 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -6867,7 +6867,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-18 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -6878,7 +6878,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-18 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -6889,7 +6889,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-18 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -7395,7 +7395,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-24 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -7406,7 +7406,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-24 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -7417,7 +7417,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-24 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -7923,7 +7923,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-30 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 1,
@@ -7934,7 +7934,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-30 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "Some notes..",
     Reps: "5",
     SetOrder: 2,
@@ -7945,7 +7945,7 @@ const MOCK_DATA: ParsedResultData[] = [
   },
   {
     Date: "2025-07-30 08:00:00",
-    Name: "Goblet Squat",
+    Name: "Mock Squat",
     Notes: "",
     Reps: "5",
     SetOrder: 3,
@@ -8091,7 +8091,7 @@ const MOCK_DATA: ParsedResultData[] = [
 // const MOCK_DATA: ParsedResultData[] = [
 //   {
 //     Date: "2025-07-01 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "Some notes..",
 //     Reps: "11",
 //     SetOrder: 1,
@@ -8102,7 +8102,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-01 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "Some notes..",
 //     Reps: "8",
 //     SetOrder: 2,
@@ -8113,7 +8113,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-01 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "",
 //     Reps: "8",
 //     SetOrder: 3,
@@ -8564,7 +8564,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-07 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "Some notes..",
 //     Reps: "10",
 //     SetOrder: 1,
@@ -8575,7 +8575,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-07 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "Some notes..",
 //     Reps: "8",
 //     SetOrder: 2,
@@ -8586,7 +8586,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-07 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "Some notes..",
 //     Reps: "10",
 //     SetOrder: 3,
@@ -9037,7 +9037,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-13 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "Some notes..",
 //     Reps: "11",
 //     SetOrder: 1,
@@ -9048,7 +9048,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-13 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "Some notes..",
 //     Reps: "8",
 //     SetOrder: 2,
@@ -9059,7 +9059,7 @@ const MOCK_DATA: ParsedResultData[] = [
 //   },
 //   {
 //     Date: "2025-07-13 00:00:00",
-//     Name: "Goblet Squat",
+//     Name: "Mock Squat",
 //     Notes: "",
 //     Reps: "8",
 //     SetOrder: 3,

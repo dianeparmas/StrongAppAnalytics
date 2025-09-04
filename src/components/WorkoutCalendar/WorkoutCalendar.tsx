@@ -92,13 +92,17 @@ const WorkoutCalendar = ({
         Click on the workout-day to get detailed information about the
         excercises performed on that day
       </p>
-      <div className="calendar-container">
+      <div
+        className={`calendar-container ${selectedDate ? "with-details" : ""}`}
+      >
         <Calendar
           onClickDay={handleDayClick}
           tileClassName={tileClassName}
-          {...(currentDataType === DATA_TYPE.MOCK && {
-            value: "2025-06-01T00:00:00Z",
-          })}
+          value={
+            currentDataType === DATA_TYPE.MOCK
+              ? "2025-06-01T00:00:00Z"
+              : uniqueDates[uniqueDates.length - 1]
+          }
         />
         {selectedDate && (
           <div className="workout-details">

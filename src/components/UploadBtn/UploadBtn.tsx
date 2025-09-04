@@ -1,4 +1,6 @@
-import { UploadBtnProps } from "../../types/strongAppAnalytics.types";
+import { UploadBtnProps } from "../../types/UploadBtn.types";
+
+import Icon from "../Icon/Icon";
 
 import "./UploadBtn.css";
 
@@ -19,6 +21,7 @@ const UploadBtn = ({
         onChange={onChangeFunction}
         accept=".csv"
       />
+      {isSuccessfulUpload && <Icon icon="success" width={16} height={16} />}
     </label>
   );
 };

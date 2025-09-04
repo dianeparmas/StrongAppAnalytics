@@ -16,8 +16,14 @@ body {
   padding: 2em;
 }
 
-.chart-container {
+/* .chart-container {
   width: 700px;
+  margin: 0 auto;
+  min-height: 350px;
+  width: 100%;
+  position: relative;
+} */
+.chart-container {
   margin: 0 auto;
   min-height: 350px;
   width: 100%;
@@ -57,4 +63,14 @@ body {
 
 .savedFile-data {
   list-style: none;
+}
+
+@media all and (max-width: 1000px) {
+  #root {
+    padding: 0;
+  }
+
+  .chart-excercise-container {
+    margin-top: 3rem;
+  }
 }
