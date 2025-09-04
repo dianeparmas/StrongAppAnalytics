@@ -1,17 +1,22 @@
 import { useState } from "react";
-import Calendar from 'react-calendar';
-import "react-calendar/dist/Calendar.css"; // Import the default CSS
 
-import { WorkoutCalendarProps } from "../../types/strongAppAnalytics.types";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+
+import { ParsedResultData } from "../../types/strongAppAnalytics.types";
+
+import {
+  GroupedExercises,
+  WorkoutCalendarProps,
+  WorkoutCalendarTileArgs,
+} from "../../types/WorkoutCalendar.types";
 
 import DATA_TYPE from "../../constants/dataType";
+import EXCERCISES from "../../constants/excercises";
+
+import { formatDateToYYYYMMDD } from "../../utils/dates";
 
 import "./WorkoutCalendar.css";
-
-interface TileArgs {
-  date: Date;
-  view: string;
-}
 
 const WorkoutCalendar = ({
   currentDataType,
@@ -20,14 +25,7 @@ const WorkoutCalendar = ({
 }: WorkoutCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState("");
 
-  const formatDateToYYYYMMDD = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const tileClassName = ({ date, view }: TileArgs) => {
+  const tileClassName = ({ date, view }: WorkoutCalendarTileArgs) => {
     if (view === "month") {
       const dateString = formatDateToYYYYMMDD(date);
       if (uniqueDates.includes(dateString)) {
@@ -46,6 +44,48 @@ const WorkoutCalendar = ({
     }
   };
 
+  const groupExercisesByName = (exercises: ParsedResultData[]) => {
+    return exercises.reduce<GroupedExercises>((acc, exercise) => {
+      const exerciseName = exercise.Name;
+
+      if (!acc[exerciseName]) {
+        acc[exerciseName] = [exercise];
+      } else {
+        acc[exerciseName].push(exercise);
+      }
+
+      return acc;
+    }, {} as GroupedExercises);
+  };
+
+  const renderExcercises = () => {
+    const filteredExercises = workoutData.filter(
+      (row) =>
+        formatDateToYYYYMMDD(new Date(row.Date)) === selectedDate &&
+        row.SetOrder !== "Rest Timer",
+    );
+    const groupedExercises = groupExercisesByName(filteredExercises);
+
+    return Object.keys(groupedExercises).map((exerciseName) => (
+      <div key={exerciseName}>
+        <h3>{exerciseName}</h3>
+        {groupedExercises[exerciseName].map(
+          (exercise: ParsedResultData, index: number) => (
+            <div className="excercise-container" key={index}>
+              <p>
+                Set {exercise.SetOrder}:{" "}
+                {exerciseName === EXCERCISES.DEADHANG
+                  ? `${exercise.Duration} secs`
+                  : `${exercise.Weight} kgs | ${exercise.Reps} reps`}
+              </p>
+              <span className="notes">{exercise.Notes}</span>
+            </div>
+          ),
+        )}
+      </div>
+    ));
+  };
+
   return (
     <>
       <p>
@@ -56,22 +96,14 @@ const WorkoutCalendar = ({
         <Calendar
           onClickDay={handleDayClick}
           tileClassName={tileClassName}
-          {...(currentDataType === DATA_TYPE.MOCK && { value: "2025-06-01T00:00:00Z" })}
+          {...(currentDataType === DATA_TYPE.MOCK && {
+            value: "2025-06-01T00:00:00Z",
+          })}
         />
         {selectedDate && (
           <div className="workout-details">
             <h3>Workout on {selectedDate}</h3>
-            {workoutData
-              .filter(
-                (row) =>
-                  formatDateToYYYYMMDD(new Date(row.Date)) === selectedDate &&
-                  row.SetOrder !== "Rest Timer",
-              )
-              .map((exercise, index) => (
-                <p key={index}>
-                  {exercise.Name} - {exercise.Weight} kgs
-                </p>
-              ))}
+            {renderExcercises()}
           </div>
         )}
       </div>
