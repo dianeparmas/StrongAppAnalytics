@@ -26,7 +26,11 @@
 }
 
 .excercise-container {
-  border-bottom: 1px solid #d5d5d5;
+  border-bottom: 1px solid #cfcece;
+}
+
+.sets-container:not(:last-child) {
+  border-bottom: 1px solid #ebebeb;
 }
 
 .notes {

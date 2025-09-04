@@ -67,11 +67,11 @@ const WorkoutCalendar = ({
     const groupedExercises = groupExercisesByName(filteredExercises);
 
     return Object.keys(groupedExercises).map((exerciseName) => (
-      <div key={exerciseName}>
+      <div className="excercise-container" key={exerciseName}>
         <h3>{exerciseName}</h3>
         {groupedExercises[exerciseName].map(
           (exercise: ParsedResultData, index: number) => (
-            <div className="excercise-container" key={index}>
+            <div className="sets-container" key={index}>
               <p>
                 Set {exercise.SetOrder}:{" "}
                 {exerciseName === EXCERCISES.DEADHANG

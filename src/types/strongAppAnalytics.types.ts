@@ -1,7 +1,7 @@
 export interface AppState {
+  showFileComponent: boolean;
   showSaveSuccess: boolean;
   showUploadSuccess: boolean;
-  showFileComponent: boolean;
 }
 
 export interface ParsedResult {
@@ -14,11 +14,11 @@ export interface ParsedResultWithMeta {
   data: rawCsvData[];
   errors: [];
   meta: {
-    delimiter: string;
-    linebreak: string;
     aborted: boolean;
-    truncated: boolean;
+    delimiter: string;
     fields: string[];
+    linebreak: string;
+    truncated: boolean;
   };
 }
 
@@ -49,69 +49,4 @@ export interface ParsedResultData {
   WorkoutNr: string;
   WorkoutName: string;
   WorkoutNotes: string;
-}
-
-export interface WorkoutCalendarProps {
-  currentDataType: string;
-  uniqueDates: string[];
-  workoutData: ParsedResultData[];
-}
-
-export interface ChartProps {
-  chartData: ParsedResultData[];
-  selectedExercises: string[];
-}
-
-export interface SelectProps {
-  currentDataType: string;
-  uniqueExercises: string[];
-  onChangeFunction: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  onChangeFunctionSingle: (value: string) => void;
-}
-
-export interface UploadBtnProps {
-  className?: string;
-  defaultLabel?: string;
-  keepLabel?: boolean;
-  isSuccessfulUpload?: boolean;
-  onChangeFunction: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export interface WelcomeScreenProps {
-  uploadSuccessful: boolean;
-  handleUploadFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleUseMockData: () => void;
-}
-
-export interface MenuProps {
-  currentDataType: string;
-  handleUploadFile: () => void;
-  handleUseMockData: () => void;
-  handleSwitchDataType: (value: string) => void;
-  lastSaved: string | Date;
-}
-
-export interface IconProps {
-  icon: string;
-  onClickFunction?: () => void;
-  width?: number;
-}
-
-export interface ChartTooltipProps {
-  icon: string;
-  onClickFunction?: () => void;
-}
-
-
-export interface SavedFilePromptProps {
-  isSuccessfulUpload: boolean;
-  handleUploadFile: () => void;
-  lastSaved: Date;
-  fileLastModifiedDate: Date;
-  loadExistingFile: () => void;
-  handleSave: () => void;
-  saveNew: boolean;
-  handleDelete: () => void;
-  deleteFile: boolean;
-  currentDataType: string;
 }
