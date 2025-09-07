@@ -1,18 +1,16 @@
-export interface AppState {
-  showFileComponent: boolean;
-  showSaveSuccess: boolean;
-  showUploadSuccess: boolean;
-}
+import { ParseError } from 'papaparse';
+
+import DATA_TYPE from '../constants/dataType';
 
 export interface ParsedResult {
   data: ParsedResultData[];
-  errors: [];
+  errors: ParseError[];
   meta: number;
 }
 
 export interface ParsedResultWithMeta {
   data: rawCsvData[];
-  errors: [];
+  errors: ParseError[];
   meta: {
     aborted: boolean;
     delimiter: string;
@@ -24,18 +22,18 @@ export interface ParsedResultWithMeta {
 
 export interface rawCsvData {
   Date: string;
-  "Distance (meters)": number;
+  "Distance (meters)": number | null;
   "Duration (sec)": number;
   "Exercise Name": string;
-  Notes: string;
-  RPE: number;
-  Reps: number;
-  Seconds: number;
+  Notes: string | null;
+  RPE: number | null;
+  Reps: number | null;
+  Seconds: number | null;
   "Set Order": number | string;
-  "Weight (kg)": number;
+  "Weight (kg)": number | null;
   "Workout #": number;
   "Workout Name": string;
-  "Workout Notes": string;
+  "Workout Notes": string | null;
 }
 
 export interface ParsedResultData {
@@ -49,4 +47,9 @@ export interface ParsedResultData {
   WorkoutNr: string;
   WorkoutName: string;
   WorkoutNotes: string;
+  [key: string]: string | number | null | undefined;
 }
+
+export type DataType = "" | "real" | "mock";
+
+export type DataToLoad = (typeof DATA_TYPE)['REAL'] | (typeof DATA_TYPE)['MOCK'] | "";
