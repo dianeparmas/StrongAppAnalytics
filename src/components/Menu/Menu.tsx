@@ -4,7 +4,7 @@ import { MenuProps } from "../../types/Menu.types";
 
 import DATA_TYPE from "../../constants/dataType";
 
-import Button from "../Button/Button";
+import ButtonWrapper from "../ButtonWrapper/ButtonWrapper";
 import Icon from "../Icon/Icon";
 import UploadBtn from "../UploadBtn/UploadBtn";
 
@@ -18,14 +18,22 @@ const Menu = ({
   handleUseMockData,
   lastSaved,
   parsedCsv,
+  setFileLastModifiedDate,
+  setLastSaved,
+  setParsedCsv,
 }: MenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCurrentDataSaved, setIsCurrentDataSaved] = useState(false);
   const menuRef = useRef<HTMLImageElement>(null);
   const isRealData = currentDataType === DATA_TYPE.REAL;
 
   const handleToggleMenu = () => {
     setIsOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    setIsCurrentDataSaved(lastSaved ? true : false);
+  }, [lastSaved]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,7 +54,11 @@ const Menu = ({
   return currentDataType ? (
     <div className={`dataType-container ${currentDataType}-data`} ref={menuRef}>
       <div className={`dataType-label ${currentDataType}-data`}>
-        <p>Using {currentDataType} data</p>
+        <p className="hide-mobile">Using {currentDataType} data</p>
+        {isCurrentDataSaved && isRealData && (
+          <Icon icon="saved" width={20} height={20} />
+        )}
+        <Icon icon={currentDataType} width={16} height={16} />
         <Icon icon="menu" onClickFunction={handleToggleMenu} />
       </div>
       {currentDataType && (
@@ -55,18 +67,23 @@ const Menu = ({
             <UploadBtn
               defaultLabel={"Use real data"}
               onChangeFunction={handleUploadFile}
-              className="input-new"
+              className="input-new no-top-padding"
               keepLabel
+              isMenu
             />
           )}
           {isRealData && (
-            <Button
+            <ButtonWrapper
               defaultLabel="Upload another"
               className="input-new"
               onAction={handleUploadFile}
               isUploadBtn
               parsedCsv={parsedCsv}
               fileLastModifiedDate={fileLastModifiedDate}
+              setFileLastModifiedDate={setFileLastModifiedDate}
+              setLastSaved={setLastSaved}
+              setParsedCsv={setParsedCsv}
+              setIsCurrentDataSaved={setIsCurrentDataSaved}
             />
           )}
           {(!isRealData && lastSaved) || isRealData ? (
@@ -74,9 +91,20 @@ const Menu = ({
               className="hidden"
               onClick={() => handleSwitchDataType(currentDataType)}
             >
-              {isRealData
-                ? `Use ${DATA_TYPE.MOCK} data`
-                : `Use ${DATA_TYPE.REAL} data`}
+              <span className="hide-mobile">
+                {isRealData
+                  ? `Use ${DATA_TYPE.MOCK} data`
+                  : `Use ${DATA_TYPE.REAL} data`}
+              </span>
+              <Icon
+                icon={
+                  currentDataType === DATA_TYPE.REAL
+                    ? DATA_TYPE.MOCK
+                    : DATA_TYPE.REAL
+                }
+                width={16}
+                height={16}
+              />
             </button>
           ) : null}
         </div>

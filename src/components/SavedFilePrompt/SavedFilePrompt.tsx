@@ -2,7 +2,7 @@ import { SavedFilePromptProps } from "../../types/SavedFilePrompt.types";
 
 import DATA_TYPE from "../../constants/dataType";
 
-import Button from "../Button/Button";
+import UploadBtn from "../UploadBtn/UploadBtn";
 
 import "./SavedFilePrompt.css";
 
@@ -12,7 +12,6 @@ const SavedFilePrompt = ({
   handleUploadFile,
   lastSaved,
   loadExistingFile,
-  parsedCsv,
 }: SavedFilePromptProps) => {
   return (
     <>
@@ -20,20 +19,18 @@ const SavedFilePrompt = ({
       <ul className="savedFile-data">
         <li>last saved in App at {lastSaved.toLocaleString()} (local time)</li>
         <li>
-          last modified by User at {fileLastModifiedDate.toLocaleString()}{" "}
+          last modified by User at {fileLastModifiedDate?.toLocaleString()}{" "}
           (local time)
         </li>
       </ul>
       <p>Would you like to use that file or upload a new one?</p>
       <div className="button-container">
         <button onClick={loadExistingFile}>Use this file</button>
-        <Button
-          defaultLabel={"Upload new"}
+        <UploadBtn
+          defaultLabel={"Upload another"}
+          onChangeFunction={handleUploadFile}
           className="input-new"
-          onAction={handleUploadFile}
-          isUploadBtn
-          parsedCsv={parsedCsv}
-          fileLastModifiedDate={fileLastModifiedDate}
+          keepLabel
         />
       </div>
     </>

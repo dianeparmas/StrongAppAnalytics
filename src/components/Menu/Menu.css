@@ -9,15 +9,23 @@
   align-items: center;
   flex-direction: column;
   z-index: 100;
+  width: 165px;
   /* transition: all 2s linear 1s; */
 }
 .dataType-label {
   display: flex;
   background: #efef14;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .dataType-label p {
   margin: 0;
+}
+
+.saved-icon {
+  margin-left: 3px;
 }
 
 .dataType-menu {
@@ -51,7 +59,8 @@
   align-items: center;
 }
 
-.dataType-menu button img {
+.dataType-menu button img,
+.dataType-menu label img {
   position: absolute;
   right: 10px;
 }
@@ -123,4 +132,61 @@
   width: 100%;
   display: block;
   padding: 0.6em 0;
+}
+
+.dataType-label .mock-data-icon,
+.dataType-label .real-data-icon,
+.dataType-menu .real-data-icon {
+  display: none;
+}
+
+@media all and (max-width: 1000px) {
+  .hide-mobile {
+    display: none;
+  }
+
+  .saved-icon {
+    width: 25px;
+    height: 25px;
+    margin-left: 0;
+  }
+  .dataType-menu button {
+    height: 50px;
+  }
+  .dataType-menu .input-hidden-label {
+    height: 48px;
+    padding: 0;
+  }
+
+  .dataType-menu img,
+  .dataType-menu .mock-data-icon,
+  .dataType-label .real-data-icon,
+  .dataType-label .mock-data-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .dataType-container {
+    width: 90px;
+  }
+
+  .dataType-menu {
+    width: 50px !important;
+    right: 0;
+  }
+
+  .dataType-menu label:first-child:not(.no-top-padding) {
+    padding-top: 10px;
+  }
+
+  .dataType-menu .real-data-icon {
+    top: 10px;
+  }
+
+  .dataType-label img,
+  .dataType-menu .real-data-icon,
+  .dataType-label .mock-data-icon,
+  .dataType-label .real-data-icon {
+    display: block;
+  }
 }

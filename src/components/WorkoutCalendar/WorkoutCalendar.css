@@ -1,10 +1,26 @@
 .workout-day {
   font-size: 1rem !important;
   font-weight: bold;
+  text-decoration: underline;
+}
+
+.workout-day.isExercise {
+  color: #fff;
+  /* background: radial-gradient(circle, rgb(16 197 15 / 83%) 33%, transparent 38%); */
+  background: radial-gradient(circle, rgb(17 173 17 / 87%) 8%, transparent 49%);
+}
+
+.calendar-container
+  .react-calendar
+  .react-calendar__tile--active.workout-day.isExercise {
+  color: #fff;
+  /* background: radial-gradient(circle, rgb(16 197 15 / 83%) 33%, transparent 38%); */
+  background: radial-gradient(circle, rgb(25 217 148 / 87%) 8%, transparent 49%);
 }
 
 .calendar-container {
   display: flex;
+  justify-content: center;
 }
 
 .calendar-container:not(.with-details) {
@@ -22,15 +38,17 @@
 
 .react-calendar,
 .workout-details {
-  flex: 1 1 50%; /* flex-grow, flex-shrink, flex-basis */
+  /* flex: 1 1 50%;  */
+  /* flex-grow, flex-shrink, flex-basis */
 }
 
 .react-calendar {
   max-width: 422px;
 }
 
-.excercise-container {
+.exercise-container {
   border-bottom: 1px solid #cfcece;
+  padding: 0 5px;
 }
 
 .sets-container:not(:last-child) {
@@ -41,6 +59,43 @@
   color: #8b7b7b;
 }
 
+.calendar-tooltip-wrapper {
+  position: relative;
+}
+
+.calendar-tooltip {
+  top: -14px;
+  left: -23px;
+}
+
+.tooltip-highlighted-single {
+  background-color: rgb(25 217 148);
+  color: #fff;
+}
+
+.tooltip-highlighted {
+  background-color: rgb(0 110 220);
+  color: #fff;
+}
+
+.tooltip-bold-highlighted {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.tooltip-green {
+  background-color: rgb(17 173 17 / 87%);
+  color: #fff;
+}
+
+.calendar-container .react-calendar .react-calendar__tile--active {
+  background: radial-gradient(
+    circle,
+    rgb(0 110 220 / 59%) 30%,
+    transparent 55%
+  );
+}
+
 @media all and (max-width: 1000px) {
   .react-calendar,
   .workout-details {
@@ -49,5 +104,14 @@
 
   .calendar-container {
     display: block;
+  }
+
+  .calendar-tooltip-wrapper {
+    display: block;
+  }
+
+  .calendar-tooltip {
+    top: -14px;
+    left: -23px;
   }
 }

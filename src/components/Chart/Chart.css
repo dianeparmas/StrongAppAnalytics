@@ -8,29 +8,24 @@ select.metric-select {
   margin: 20px;
 }
 
-/* .chart-content {
-  position: relative;
-  width: 100%;
-    height: 500px;
-    aspect-ratio: 16 / 9;
-} */
 .chart-content {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9; /* Use aspect-ratio to control height fluidly */
+  /* aspect-ratio: 16 / 9; */
 }
 
 @media all and (max-width: 1000px) {
   .chart-container {
     min-height: initial !important;
   }
-  /**/
+
   .chart-wrapper {
     width: 100vw !important;
     overflow-x: scroll;
+    background: #f9f9f9;
   }
+
   .chart-content {
     width: 700px;
   }
-  /**/
 }

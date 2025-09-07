@@ -4,33 +4,54 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 import { ParsedResultData } from "../../types/strongAppAnalytics.types";
-
 import {
   GroupedExercises,
   WorkoutCalendarProps,
   WorkoutCalendarTileArgs,
 } from "../../types/WorkoutCalendar.types";
 
-import DATA_TYPE from "../../constants/dataType";
-import EXCERCISES from "../../constants/excercises";
+import exercises from "../../constants/exercises";
 
 import { formatDateToYYYYMMDD } from "../../utils/dates";
+
+import Tooltip from "../Tooltip/Tooltip";
 
 import "./WorkoutCalendar.css";
 
 const WorkoutCalendar = ({
-  currentDataType,
+  selectedExercise,
   uniqueDates,
   workoutData,
 }: WorkoutCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState("");
+  const isOneExercise = selectedExercise.length === 1;
 
   const tileClassName = ({ date, view }: WorkoutCalendarTileArgs) => {
     if (view === "month") {
       const dateString = formatDateToYYYYMMDD(date);
-      if (uniqueDates.includes(dateString)) {
-        return "workout-day";
+
+      if (!uniqueDates.includes(dateString)) {
+        return null;
       }
+
+      let classes = "workout-day";
+
+      if (selectedExercise.length === 1) {
+        const hasSelectedExercise = workoutData.some((workout) => {
+          const workoutDateString = formatDateToYYYYMMDD(
+            new Date(workout.Date),
+          );
+          return (
+            workoutDateString === dateString &&
+            workout.Name === selectedExercise[0]
+          );
+        });
+
+        if (hasSelectedExercise) {
+          classes += " isExercise";
+        }
+      }
+      return classes;
     }
     return null;
   };
@@ -58,7 +79,7 @@ const WorkoutCalendar = ({
     }, {} as GroupedExercises);
   };
 
-  const renderExcercises = () => {
+  const renderexercises = () => {
     const filteredExercises = workoutData.filter(
       (row) =>
         formatDateToYYYYMMDD(new Date(row.Date)) === selectedDate &&
@@ -67,47 +88,72 @@ const WorkoutCalendar = ({
     const groupedExercises = groupExercisesByName(filteredExercises);
 
     return Object.keys(groupedExercises).map((exerciseName) => (
-      <div className="excercise-container" key={exerciseName}>
+      <div className="exercise-container" key={exerciseName}>
         <h3>{exerciseName}</h3>
         {groupedExercises[exerciseName].map(
-          (exercise: ParsedResultData, index: number) => (
-            <div className="sets-container" key={index}>
-              <p>
-                Set {exercise.SetOrder}:{" "}
-                {exerciseName === EXCERCISES.DEADHANG
-                  ? `${exercise.Duration} secs`
-                  : `${exercise.Weight} kgs | ${exercise.Reps} reps`}
-              </p>
-              <span className="notes">{exercise.Notes}</span>
-            </div>
-          ),
+          (exercise: ParsedResultData, index: number) => {
+            const isNote = exercise.SetOrder === "Note";
+            return (
+              <div className="sets-container" key={index}>
+                {!isNote ? (
+                  <p>
+                    Set {exercise.SetOrder}:{" "}
+                    {exerciseName === exercises.DEADHANG
+                      ? `${exercise.Duration} secs`
+                      : `${exercise.Weight} kgs | ${exercise.Reps} reps`}
+                  </p>
+                ) : (
+                  <span className="notes">Set note: {exercise.Notes}</span>
+                )}
+              </div>
+            );
+          },
         )}
       </div>
     ));
   };
 
-  return (
+  const tooltipContent = (
     <>
       <p>
-        Click on the workout-day to get detailed information about the
-        excercises performed on that day
+        The latest workout-date is{" "}
+        <span className={isOneExercise ? "tooltip-highlighted-single" : "tooltip-highlighted"}>highlighted</span> by default
+      </p>
+      <p>
+        All exercise-days are{" "}
+        <span className="tooltip-bold-highlighted">bold and underlined</span>
+      </p>
+      {isOneExercise && (
+        <p>
+          Exercise-days for selected exercise are with{" "}
+          <span className="tooltip-green">green</span> background
+        </p>
+      )}
+    </>
+  );
+
+  return (
+    <>
+      <p className="calendar-instructions">
+        Click on the workout-day to get detailed information about the exercises
+        performed on that day
       </p>
       <div
         className={`calendar-container ${selectedDate ? "with-details" : ""}`}
       >
-        <Calendar
-          onClickDay={handleDayClick}
-          tileClassName={tileClassName}
-          value={
-            currentDataType === DATA_TYPE.MOCK
-              ? "2025-06-01T00:00:00Z"
-              : uniqueDates[uniqueDates.length - 1]
-          }
-        />
+        <span className="calendar-tooltip-wrapper">
+          <Tooltip className="calendar-tooltip">{tooltipContent}</Tooltip>
+          <Calendar
+            onClickDay={handleDayClick}
+            tileClassName={tileClassName}
+            value={uniqueDates[uniqueDates.length - 1]}
+          />
+        </span>
+
         {selectedDate && (
           <div className="workout-details">
             <h3>Workout on {selectedDate}</h3>
-            {renderExcercises()}
+            {renderexercises()}
           </div>
         )}
       </div>

@@ -1,12 +1,13 @@
 body {
-  max-width: 1600px;
+  /* max-width: 1600px; */
   margin: 0 auto;
   position: relative;
   z-index: -1;
 }
 
 #root {
-  max-width: 1280px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -57,7 +58,7 @@ body {
   justify-content: center;
 }
 
-.chart-excercise-container {
+.chart-exercise-container {
   margin-top: 2rem;
 }
 
@@ -65,12 +66,20 @@ body {
   list-style: none;
 }
 
+.content .upload-icon,
+.input--style-text .upload-icon {
+  display: none;
+}
+
+@media all and (min-width: 1001px) {
+}
+
 @media all and (max-width: 1000px) {
   #root {
-    padding: 0;
+    padding: 5px;
   }
 
-  .chart-excercise-container {
+  .chart-exercise-container {
     margin-top: 3rem;
   }
 }
