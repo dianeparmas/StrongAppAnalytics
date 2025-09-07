@@ -6,5 +6,6 @@ export const ACTIONS = {
 
 export const ACTION_STATUS = {
   IDLE: "idle",
+  LOADING: "loading",
   SUCCESS: "success",
-}
+} as const;
