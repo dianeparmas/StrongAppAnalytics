@@ -6,7 +6,11 @@
 
 .workout-day.isExercise {
   color: #fff;
-  background: radial-gradient(circle, rgb(var(--darkMode-workoutDay-color) / 87%) 8%, transparent 49%);
+  background: radial-gradient(
+    circle,
+    rgb(var(--darkMode-workoutDay-color) / 87%) 8%,
+    transparent 49%
+  );
 }
 
 .calendar-container
@@ -99,8 +103,8 @@
 }
 
 .workout-day {
-    text-decoration-thickness: 2px;
-  }
+  text-decoration-thickness: 2px;
+}
 
 @media all and (max-width: 1000px) {
   .react-calendar,
@@ -109,8 +113,15 @@
     margin: 0 auto;
   }
 
+  .calendar-container.with-details,
+  .calendar-tooltip-wrapper,
+  .react-calendar {
+    height: auto;
+  }
+
   .workout-details {
     margin-top: 1rem;
+    height: 250px;
   }
 
   .calendar-container {
@@ -145,9 +156,11 @@
     border-radius: 50%;
   }
 
-  .calendar-container .react-calendar .react-calendar__tile--active:not(.isExercise) {
+  .calendar-container
+    .react-calendar
+    .react-calendar__tile--active:not(.isExercise) {
     background: none;
-    border: 2px solid  rgb(var(--darkMode-latest-color));
+    border: 2px solid rgb(var(--darkMode-latest-color));
     border-radius: 50%;
   }
 
@@ -156,14 +169,14 @@
     .react-calendar__tile--active.workout-day.isExercise {
     color: #fff;
     background: none;
-    border: 2px solid  rgb(var(--darkMode-latest-color));
+    border: 2px solid rgb(var(--darkMode-latest-color));
     border-radius: 50%;
   }
 
   .tooltip-highlighted-single {
     background-color: transparent;
     color: #000;
-    border: 2px solid  rgb(var(--darkMode-latest-color));
+    border: 2px solid rgb(var(--darkMode-latest-color));
     padding: 0 2px;
   }
 
