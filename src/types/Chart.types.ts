@@ -5,17 +5,6 @@ export interface ChartProps {
   selectedExercises: string[];
 }
 
-// export type Dataset = {
-//   borderColor: string;
-//   data: { x: number; y: number | null }[];
-//   label: string;
-//   pointBackgroundColor: string[];
-//   pointBorderColor: string;
-//   pointRadius: number;
-//   pointStyle: string;
-// };
-
-// This is the type for single-exercise sets
 export type SetDataset = {
   label: string;
   data: (number | null)[];
@@ -27,10 +16,8 @@ export type SetDataset = {
   pointBorderColor?: string;
 };
 
-// This is the type for multiple exercises
 export type MultipleExerciseDataset = {
   borderColor: string;
-  // data: { x: number; y: number | null }[];
   data: (number | null)[];
   label: string;
   pointBackgroundColor: string[];
@@ -40,7 +27,6 @@ export type MultipleExerciseDataset = {
 };
 
 export type ChartData = {
-  // datasets: Dataset[];
   datasets: SetDataset[] | MultipleExerciseDataset[];
   labels: string[];
   rotationAngle: number;
@@ -58,6 +44,7 @@ export interface GroupedExercisesBySet {
 
 export interface ProcessChartDataParams {
   chartData: ParsedResultData[];
+  isDarkMode: boolean;
   selectedExercises: string[];
   metricType: string;
 }
@@ -68,4 +55,4 @@ export interface VisualOffsetPluginParams {
   metricType: string;
 }
 
-export type MetricKeys = 'Weight' | 'Reps' | 'Duration';
+export type MetricKeys = "Weight" | "Reps" | "Duration";
