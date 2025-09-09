@@ -1,3 +1,8 @@
+interface DataRow {
+  Date: string;
+  [key: string]: any;
+}
+
 export const formatDateToYYYYMMDD = (date: Date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -19,4 +24,13 @@ export const formatDateString = (dateString: string)  =>{
   const year = parts[2];
 
   return `${year}-${month}-${day} 00:00:00`;
+}
+
+export const extractWorkoutDates = (dataArray: DataRow[]): string[] => {
+  return dataArray.map((row) => row.Date.split(" ")[0]);
+}
+
+export const extractUniqueWorkoutDates = (dataArray: DataRow[]): string[] => {
+  const allWorkoutDates = dataArray.map((row) => row.Date.split(" ")[0]);
+  return [...new Set(allWorkoutDates)];
 }

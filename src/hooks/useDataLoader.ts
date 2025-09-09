@@ -1,12 +1,14 @@
-import { ParsedResultData } from "./../types/strongAppAnalytics.types";
+import { DataToLoad, ParsedResultData } from "./../types/strongAppAnalytics.types";
 
 import DATA_TYPE from "./../constants/dataType";
 import MOCK_DATA from "./../constants/mockData";
 
+import { extractUniqueWorkoutDates } from "../utils/dates";
+
 interface UseDataLoaderProps {
   setParsedCsv: React.Dispatch<React.SetStateAction<ParsedResultData[]>>;
   setUniqueDates: React.Dispatch<React.SetStateAction<string[]>>;
-  setCurrentDataType: React.Dispatch<React.SetStateAction<typeof DATA_TYPE[keyof typeof DATA_TYPE]>>;
+  setCurrentDataType: React.Dispatch<React.SetStateAction<DataToLoad>>;
 }
 
 export const useDataLoader = ({
@@ -15,9 +17,8 @@ export const useDataLoader = ({
   setCurrentDataType,
 }: UseDataLoaderProps) => {
   const loadWorkoutData = (dataArray: ParsedResultData[], dataType: string) => {
-    const allWorkoutDates = dataArray.map((row) => row.Date.split(" ")[0]);
-    setUniqueDates([...new Set(allWorkoutDates)]);
-    setCurrentDataType(dataType);
+    setUniqueDates(extractUniqueWorkoutDates(dataArray));
+    setCurrentDataType(dataType as DataToLoad);
   };
 
   const loadExistingFile = () => {
