@@ -6,7 +6,6 @@
 //   ]
 // }
 
-
 // {
 //   "compilerOptions": {
 //     "baseUrl": "src",
@@ -50,8 +49,15 @@
       "*": ["node_modules/*", "src/*"] // Adjust paths for module resolution
     }
   },
-  "include": ["src/**/*", "src/App.tsx", "eslint.config.js"], // This includes all TypeScript files in the src directory
-  "exclude": ["node_modules", "build", "dist", "other_eslint_conf_files"], // Exclude unnecessary directories
+  //"include": ["src/**/*", "src/App.tsx", "eslint.config.js"], // This includes all TypeScript files in the src directory
+  "include": ["src", "src/declarations.d.ts"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "other_eslint_conf_files",
+    "src/**/*.d.ts"
+  ], // Exclude unnecessary directories
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
