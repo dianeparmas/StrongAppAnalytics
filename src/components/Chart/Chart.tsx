@@ -134,16 +134,15 @@ const Chart = ({ chartData = [], selectedExercises = [] }: ChartProps) => {
 
   const tooltipContent = (
     <>
-      <p>Click a legend item to hide or show its exercise line.</p>
+      <p>Click a legend item to hide or show its exercise line</p>
       {selectedExercises.length > 1 && (
         <>
           <p>
-            On the graph, when viewing more than 1 exercise, empty nodes mean
-            that the exercise was not performed on that day
+            Empty nodes mean that the exercise was not performed on that day
           </p>
           <p>
-            When viewing more than 1 exercise, the graph shows the maxWeight /
-            maxReps of that day
+            The graph shows the overall maximum (weight/reps) across all sets of
+            that exercise
           </p>
         </>
       )}
