@@ -12,7 +12,7 @@ import { extractUniqueWorkoutDates, formatDateString } from "./../utils/dates";
 
 import DATA_TYPE from "./../constants/dataType";
 
-export function useCsvUpload() {
+export const useCsvUpload = () => {
   const [parsedCsv, setParsedCsv] = useState<ParsedResultData[]>([]);
   const [uniqueDates, setUniqueDates] = useState<string[]>([]);
   const [uploadSuccessful, setUploadSuccessful] = useState(false);
