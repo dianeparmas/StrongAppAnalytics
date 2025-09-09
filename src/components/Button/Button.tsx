@@ -36,11 +36,7 @@ const Button = ({
       <button onClick={handleClick}>
         <span className="hide-mobile">{label}</span>
         {status === ACTION_STATUS.IDLE && (
-          <Icon
-            icon={idleIcon}
-            width={16}
-            height={16}
-          />
+          <Icon icon={idleIcon} width={16} height={16} />
         )}
         {status === ACTION_STATUS.LOADING && <div className="loader" />}
         {status === ACTION_STATUS.SUCCESS && (

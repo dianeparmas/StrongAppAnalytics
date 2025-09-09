@@ -37,15 +37,12 @@ const Menu = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Check if the click is outside the menu container
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    // Add the event listener to the document
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Return a cleanup function to remove the listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };

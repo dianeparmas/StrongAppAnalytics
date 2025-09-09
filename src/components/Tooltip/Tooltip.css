@@ -28,22 +28,6 @@
   display: block;
 }
 
-/* @media (pointer: fine) {
-  .tooltip {
-    pointer-events: none; 
-  }
-}
-@media (pointer: coarse) {
-  .tooltip {
-    pointer-events: auto; 
-  }
-} */
-
-/* @media (pointer: fine) {
-  .tooltip {
-    pointer-events: none; 
-  }
-} */
 @media (hover: hover) and (pointer: fine) {
   .legend-icon:hover + .tooltip-content {
     display: block;
@@ -71,5 +55,4 @@
     background-color: rgb(207 207 207);
     color: #000;
   }
-
 }

@@ -78,6 +78,7 @@ body {
 @media all and (max-width: 1000px) {
   #root {
     padding: 0.625rem;
+    overflow-x: hidden;
   }
 
   .chart-exercise-container {

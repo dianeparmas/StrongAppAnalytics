@@ -10,7 +10,6 @@
   flex-direction: column;
   z-index: 100;
   width: 165px;
-  /* transition: all 2s linear 1s; */
 }
 .dataType-label {
   display: flex;
@@ -31,7 +30,6 @@
 .dataType-menu {
   transform: translateY(-100%);
   transition: transform 0.5s ease-in-out;
-  /* Prevent the div from taking up space when hidden */
   position: absolute;
   top: 100%;
   z-index: -1;
@@ -40,7 +38,6 @@
 
 .dataType-menu button {
   padding: 0.3125rem;
-  /* margin-top: 1rem */
 }
 
 .dataType-menu.is-open {
@@ -71,7 +68,6 @@
   padding: 0.5rem;
   background: #efef14;
   text-align: center;
-  /* top: 58px; */
   top: 0;
   width: 46px;
   height: 43px;
@@ -83,9 +79,6 @@
 }
 
 .mockData-container div {
-  /* visibility: hidden;
-    opacity: 0; */
-
   position: absolute;
   transform: translateY(-50%);
   transform: translateX(0%);
@@ -188,6 +181,15 @@
   .dataType-label .mock-data-icon,
   .dataType-label .real-data-icon {
     display: block;
+  }
+
+  .dataType-menu .input-new {
+    border: none;
+    border-radius: 0;
+  }
+
+  .dataType-menu button {
+    border-radius: 0;
   }
 }
 

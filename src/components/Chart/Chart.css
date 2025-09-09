@@ -33,7 +33,6 @@ select.metric-select {
   }
 
   .chart-content {
-    /* width: 700px; */
     height: 450px;
   }
 }

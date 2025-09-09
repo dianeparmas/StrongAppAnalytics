@@ -10,12 +10,12 @@ const SelectExercises = ({
   onChangeFunction,
   onChangeFunctionSingle,
 }: SelectExercisesProps) => {
-  useEffect(() => {
-    onChangeFunctionSingle(uniqueExercises[0]);
-  }, [uniqueExercises]);
-
   const alphabeticalExercises = useMemo(() => {
     return [...uniqueExercises].sort((a, b) => a.localeCompare(b));
+  }, [uniqueExercises]);
+
+  useEffect(() => {
+    onChangeFunctionSingle(alphabeticalExercises[0]);
   }, [uniqueExercises]);
 
   const isOneexercise = uniqueExercises.length === 1;

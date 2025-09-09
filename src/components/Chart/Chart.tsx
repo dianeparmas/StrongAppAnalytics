@@ -178,9 +178,7 @@ const Chart = ({ chartData = [], selectedExercises = [] }: ChartProps) => {
             <div
               className="chart-content"
               style={{
-                // width: `${getChartWidth(workoutData.labels.length)}`,
                 width: `${width < 768 ? getChartWidth(workoutData.labels.length) : `100%`}`,
-                // width: `50%`,
               }}
             >
               <Line options={chartOptions} data={workoutData} />
