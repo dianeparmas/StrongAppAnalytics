@@ -135,6 +135,7 @@ const Chart = ({ chartData = [], selectedExercises = [] }: ChartProps) => {
   const tooltipContent = (
     <>
       <p>Click a legend item to hide or show its exercise line</p>
+      <p>Click on the node to see its detailed value</p>
       {selectedExercises.length > 1 && (
         <>
           <p>
