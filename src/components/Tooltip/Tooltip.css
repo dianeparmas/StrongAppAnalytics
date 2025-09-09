@@ -25,16 +25,6 @@
 }
 
 .tooltip-content.is-open {
-  /* position: absolute;
-  width: 200px;
-  font-size: 0.875rem;
-  display: block;
-  background-color: #ffffff;
-  top: 37px;
-  right: 24px;
-  box-shadow: -1px 6px 15px -2px rgba(0, 0, 0, 0.53);
-  -webkit-box-shadow: -1px 6px 15px -2px rgba(0, 0, 0, 0.53);
-  -moz-box-shadow: -1px 6px 15px -2px rgba(0, 0, 0, 0.53); */
   display: block;
 }
 
@@ -59,7 +49,7 @@
     display: block;
   }
   .tooltip {
-    pointer-events: none; 
+    pointer-events: none;
   }
 }
 
@@ -74,4 +64,12 @@
   .tooltip {
     pointer-events: auto; /* allow click/tap */
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  .tooltip-content {
+    background-color: rgb(207 207 207);
+    color: #000;
+  }
+
 }

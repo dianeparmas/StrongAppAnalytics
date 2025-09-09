@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { SelectExercisesProps } from "../../types/SelectExercises.types";
 
@@ -11,15 +11,12 @@ const SelectExercises = ({
   onChangeFunctionSingle,
 }: SelectExercisesProps) => {
   useEffect(() => {
-    if (uniqueExercises.length === 1) {
-      onChangeFunctionSingle(uniqueExercises[0]);
-    }
+    onChangeFunctionSingle(uniqueExercises[0]);
   }, [uniqueExercises]);
 
-  useEffect(() => {
-    console.log("mount");
-    onChangeFunctionSingle(uniqueExercises[0]);
-  }, []);
+  const alphabeticalExercises = useMemo(() => {
+    return [...uniqueExercises].sort((a, b) => a.localeCompare(b));
+  }, [uniqueExercises]);
 
   const isOneexercise = uniqueExercises.length === 1;
   const selectHeight = 6;
@@ -30,6 +27,7 @@ const SelectExercises = ({
       <>
         <label>Select 1 or more exercises from {currentDataType} data</label>
         <select
+          key={currentDataType}
           onChange={(event) => onChangeFunction(event)}
           multiple={isOneexercise ? false : true}
           size={
@@ -38,16 +36,13 @@ const SelectExercises = ({
               : uniqueExercises.length
           }
           className={isOneexercise ? "no-arrow" : ""}
-          // defaultValue={isOneexercise ? uniqueExercises[0] : undefined}
-          defaultValue={[uniqueExercises[0]]}
+          defaultValue={[alphabeticalExercises[0]]}
         >
-          {uniqueExercises
-            .sort((a, b) => a.localeCompare(b))
-            .map((exerciseName) => (
-              <option key={exerciseName} value={exerciseName}>
-                {exerciseName}
-              </option>
-            ))}
+          {alphabeticalExercises.map((exerciseName) => (
+            <option key={exerciseName} value={exerciseName}>
+              {exerciseName}
+            </option>
+          ))}
         </select>
       </>
     )

@@ -52,8 +52,8 @@ const ButtonWrapper = ({
           fileSaved: fileLastModifiedDate?.toISOString(),
         }),
       );
-      setLastSaved(new Date().toISOString());
-      setFileLastModifiedDate(fileLastModifiedDate?.toISOString());
+      setLastSaved(new Date());
+      setFileLastModifiedDate(fileLastModifiedDate);
       setIsCurrentDataSaved(true);
       return Promise.resolve();
     } catch (err) {

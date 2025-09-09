@@ -9,11 +9,13 @@ const UploadBtn = ({
   defaultLabel,
   isSuccessfulUpload,
   onChangeFunction,
-  keepLabel,
+  // keepLabel,
+  isMenu = false,
 }: UploadBtnProps) => {
   return (
     <label className={`input-hidden-label ${className}`}>
-      {isSuccessfulUpload && !keepLabel ? "File Uploaded" : defaultLabel}
+      {/* <span className={`${isMenu ? "hide-mobile" : ""}`}>{isSuccessfulUpload && !keepLabel ? "File Uploaded" : defaultLabel}</span> */}
+      <span className={`${isMenu ? "hide-mobile" : ""}`}>{defaultLabel}</span>
       <input
         type="file"
         id="csvFile"
@@ -21,6 +23,7 @@ const UploadBtn = ({
         onChange={onChangeFunction}
         accept=".csv"
       />
+      <Icon icon={isMenu ? "real" : "upload"} width={16} height={16} />
       {isSuccessfulUpload && <Icon icon="success" width={16} height={16} />}
     </label>
   );

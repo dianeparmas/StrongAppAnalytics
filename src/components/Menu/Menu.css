@@ -190,3 +190,33 @@
     display: block;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .mockData-container,
+  .mockData-container div,
+  .dataType-container,
+  .dataType-label {
+    background: #9d9d0f;
+  }
+
+  .mockData-container p {
+    color: #000;
+  }
+
+  .mockData-container button {
+    border: 1px solid #4d4d4d;
+  }
+
+  .real-data {
+    background: #58996a;
+  }
+
+  .dataType-menu .input-new {
+    border: none;
+    border-radius: 0;
+  }
+
+  .dataType-menu button {
+    border-radius: 0;
+  }
+}

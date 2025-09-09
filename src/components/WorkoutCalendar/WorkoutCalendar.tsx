@@ -3,6 +3,8 @@ import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
+import { useTheme } from "../../contexts/ThemeContext";
+
 import { ParsedResultData } from "../../types/strongAppAnalytics.types";
 import {
   GroupedExercises,
@@ -25,6 +27,7 @@ const WorkoutCalendar = ({
 }: WorkoutCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState("");
   const isOneExercise = selectedExercise.length === 1;
+  const { isDarkMode } = useTheme();
 
   const tileClassName = ({ date, view }: WorkoutCalendarTileArgs) => {
     if (view === "month") {
@@ -117,7 +120,14 @@ const WorkoutCalendar = ({
     <>
       <p>
         The latest workout-date is{" "}
-        <span className={isOneExercise ? "tooltip-highlighted-single" : "tooltip-highlighted"}>highlighted</span> by default
+        <span
+          className={
+            isOneExercise ? "tooltip-highlighted-single" : "tooltip-highlighted"
+          }
+        >
+          {isDarkMode ? "outlined" : "highlighted"}
+        </span>{" "}
+        by default
       </p>
       <p>
         All exercise-days are{" "}
@@ -126,7 +136,8 @@ const WorkoutCalendar = ({
       {isOneExercise && (
         <p>
           Exercise-days for selected exercise are with{" "}
-          <span className="tooltip-green">green</span> background
+          <span className="tooltip-green">green</span>{" "}
+          {isDarkMode ? "outline" : "background"}
         </p>
       )}
     </>

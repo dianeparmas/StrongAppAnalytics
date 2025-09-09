@@ -1,3 +1,32 @@
 .button-container > *:not(:first-child) {
-    margin-left: 10px;
+  margin-left: 10px;
+}
+
+.savedFile-data {
+  padding-left: 0;
+}
+
+@media all and (max-width: 767px) {
+  .button-container .input-new {
+    display: inline-block;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media all and (max-width: 700px) {
+  .button-container .input-new,
+  .button-container button {
+    padding: 0.6em;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .button-container button {
+    border: 1px solid #4d4d4d;
+    color: rgba(255, 255, 255, 0.87);
+  }
 }

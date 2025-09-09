@@ -12,7 +12,7 @@
   left: 0;
   bottom: 0;
   cursor: pointer;
-  pointer-events: none
+  pointer-events: none;
 }
 
 .input-hidden:hover,
@@ -61,4 +61,20 @@
 .input--style-text:hover {
   cursor: pointer;
   color: rgb(56 150 233);
+}
+
+@media (prefers-color-scheme: dark) {
+  .input--style-text {
+    color: rgba(255, 255, 255, 0.87);
+  }
+
+  .input--style-text:hover {
+    color: #71c5ff;
+  }
+
+  .input-new {
+    background-color: #1a1a1a;
+    border: 1px solid #4d4d4d;
+    color: rgba(255, 255, 255, 0.87);
+  }
 }

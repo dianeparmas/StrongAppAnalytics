@@ -8,7 +8,11 @@ import Icon from "../Icon/Icon";
 
 import "./Button.css";
 
-const Button = ({ onClickFunction, label, idleIcon = "placeholder" }: ButtonProps) => {
+const Button = ({
+  onClickFunction,
+  label,
+  idleIcon = "placeholder",
+}: ButtonProps) => {
   const [status, setStatus] = useState<ActionStatus>(ACTION_STATUS.IDLE);
   const timeoutRef = useRef<number | null>(null);
 
@@ -32,7 +36,11 @@ const Button = ({ onClickFunction, label, idleIcon = "placeholder" }: ButtonProp
       <button onClick={handleClick}>
         <span className="hide-mobile">{label}</span>
         {status === ACTION_STATUS.IDLE && (
-          <Icon icon={idleIcon} width={16} height={16} />
+          <Icon
+            icon={idleIcon}
+            width={16}
+            height={16}
+          />
         )}
         {status === ACTION_STATUS.LOADING && <div className="loader" />}
         {status === ACTION_STATUS.SUCCESS && (
