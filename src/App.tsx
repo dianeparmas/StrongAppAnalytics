@@ -160,6 +160,7 @@ function App() {
             uniqueDates={uniqueDates}
             workoutData={parsedCsv}
             selectedExercise={selectedExercise}
+            currentDataType={currentDataType}
           />
         )}
         {lastSaved && parsedCsv.length > 0 ? (

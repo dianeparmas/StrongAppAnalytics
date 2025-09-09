@@ -21,6 +21,7 @@ import Tooltip from "../Tooltip/Tooltip";
 import "./WorkoutCalendar.css";
 
 const WorkoutCalendar = ({
+  currentDataType,
   selectedExercise,
   uniqueDates,
   workoutData,
@@ -95,7 +96,11 @@ const WorkoutCalendar = ({
         <h3>{exerciseName}</h3>
         {groupedExercises[exerciseName].map(
           (exercise: ParsedResultData, index: number) => {
-            const isNote = exercise.SetOrder === "Note";
+            const isNote =
+              currentDataType === "real"
+                ? exercise.SetOrder === "Note"
+                : exercise.Notes;
+
             return (
               <div className="sets-container" key={index}>
                 {!isNote ? (
