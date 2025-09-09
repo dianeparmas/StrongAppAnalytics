@@ -14,9 +14,7 @@ const Tooltip = ({ children, className }: TooltipProps) => {
   };
 
   return (
-    <div
-      className={`tooltip-container ${className ? className : ""}`}
-    >
+    <div className={`tooltip-container ${className ? className : ""}`}>
       <Icon onClickFunction={handleToggleMenu} icon="legend" width={40} />
       <div className={`tooltip-content ${isOpen ? "is-open" : ""}`}>
         {children}

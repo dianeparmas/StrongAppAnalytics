@@ -1,6 +1,6 @@
-import { ParseError } from 'papaparse';
+import { ParseError } from "papaparse";
 
-import DATA_TYPE from '../constants/dataType';
+import DATA_TYPE from "../constants/dataType";
 
 export interface ParsedResult {
   data: ParsedResultData[];
@@ -52,4 +52,7 @@ export interface ParsedResultData {
 
 export type DataType = "" | "real" | "mock";
 
-export type DataToLoad = (typeof DATA_TYPE)['REAL'] | (typeof DATA_TYPE)['MOCK'] | "";
+export type DataToLoad =
+  | (typeof DATA_TYPE)["REAL"]
+  | (typeof DATA_TYPE)["MOCK"]
+  | "";

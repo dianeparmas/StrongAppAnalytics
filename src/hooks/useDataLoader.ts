@@ -1,4 +1,7 @@
-import { DataToLoad, ParsedResultData } from "./../types/strongAppAnalytics.types";
+import {
+  DataToLoad,
+  ParsedResultData,
+} from "./../types/strongAppAnalytics.types";
 
 import DATA_TYPE from "./../constants/dataType";
 import MOCK_DATA from "./../constants/mockData";
