@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -7,9 +8,26 @@ import {
   PointElement,
   LineElement,
   Title,
-  Tooltip,
+  Tooltip as ChartTooltip,
   Legend,
 } from "chart.js";
+
+import { useTheme } from "../../contexts/ThemeContext";
+
+import { ChartData, ChartProps, MetricKeys } from "../../types/Chart.types";
+
+import exercises from "../../constants/exercises";
+import METRICS from "../../constants/metrics";
+
+import { getChartWidth } from "../../helpers/chartHelpers";
+import processChartData from "../../helpers/processChartData";
+import visualOffsetPlugin from "../../helpers/visualOffsetPlugin";
+
+import useWindowSize from "../../hooks/useWindowSize";
+
+import Tooltip from "../Tooltip/Tooltip";
+
+import "./Chart.css";
 
 ChartJS.register(
   CategoryScale,
@@ -17,196 +35,159 @@ ChartJS.register(
   PointElement,
   LineElement,
   Title,
-  Tooltip,
+  ChartTooltip,
   Legend,
+  visualOffsetPlugin,
 );
 
-const Chart = ({ chartData = [], selectedExercises = [] }) => {
+const Chart = ({ chartData = [], selectedExercises = [] }: ChartProps) => {
+  const [workoutData, setWorkoutData] = useState<ChartData>({
+    labels: [],
+    datasets: [],
+    rotationAngle: 0,
+  });
+  const [metricType, setMetricType] = useState<MetricKeys>(METRICS.WEIGHT);
+  const { isDarkMode } = useTheme();
+  const { width } = useWindowSize();
 
-  const [workoutData, setWorkoutData] = useState([]);
+  const isDeadhang =
+    selectedExercises.length === 1 &&
+    selectedExercises[0] === exercises.DEADHANG;
 
-  const formatDateToYYYYMMDD = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+  const handleChangeMetricType = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const selectedType = event.target.value as MetricKeys;
+    setMetricType(selectedType);
   };
 
   useEffect(() => {
-    if (
-      selectedExercises &&
-      selectedExercises.length > 0 &&
-      chartData.length > 0
-    ) {
-      const compiledData = {};
-      chartData.forEach((item) => {
-        const workoutDate = formatDateToYYYYMMDD(new Date(item.Date));
-        const numericWeight = Number(item.Weight);
-        const numericDuration = Number(item.Duration);
-
-        // Check if the exercise key exists
-        if (!compiledData[item.Name]) {
-          compiledData[item.Name] = {};
-        }
-
-        if (item.Name === "Deadhang") {
-          // For "Deadhang", we want to store the duration in seconds
-          if (
-            !compiledData[item.Name][workoutDate] ||
-            numericDuration > compiledData[item.Name][workoutDate]
-          ) {
-            compiledData[item.Name][workoutDate] = numericDuration;
-          }
-        } else {
-          // Check if an entry for this date exists, and if the current weight is a new max
-          if (
-            !compiledData[item.Name][workoutDate] ||
-            numericWeight > compiledData[item.Name][workoutDate]
-          ) {
-            compiledData[item.Name][workoutDate] = numericWeight;
-          }
-        }
-      });
-
-      // 2. Get all unique dates across all selected exercises for the X-axis labels
-      const allDates = selectedExercises.flatMap((exerciseName) =>
-        Object.keys(compiledData[exerciseName] || {}),
-      );
-      const uniqueDates = [...new Set(allDates)].sort();
-
-      // An array of unique point styles and their recommended radius for visual balance
-      const pointStyles = [
-        { style: 'circle', radius: 7, offset: 0 },
-        { style: 'rect', radius: 7, offset: 0.1 }, // Offset by 0.1
-        { style: 'star', radius: 7, offset: -0.1 }, // Offset by -0.1
-        { style: 'triangle', radius: 8, offset: 0.2 },
-        { style: 'cross', radius: 7, offset: -0.2 },
-        { style: 'dash', radius: 8, offset: 0.3 }
-      ];
-
-      // create a dataset for each selected exercise
-      const newDatasets = selectedExercises?.map((exerciseName, index) => {
-        const exerciseProgress = compiledData[exerciseName] || {};
-        let lastKnownWeight = null;
-        const dataForChart = [];
-        const backgroundColors = [];
-        const pointBackgroundColors = [];
-        const randomColor = `hsl(${Math.random() * 360}, 70%, 50%)`;
-
-        uniqueDates.map((date) => {
-          // Check if there is a new workout for the current date
-          const currentWeight = exerciseProgress[date] || null;
-
-          if (currentWeight !== null) {
-            // If there's a new weight, update lastKnownWeight
-            lastKnownWeight = currentWeight;
-            dataForChart.push(currentWeight);
-            backgroundColors.push(randomColor); // Color for a workout day
-          } else {
-            console.log("ELSE NO WORKOUT DATA");
-            // If there's no new weight, use the last known weight and a different color
-            dataForChart.push(lastKnownWeight);
-            backgroundColors.push("rgba(195, 195, 195, 0.3)");
-          }
-        });
-        const { style, radius, offset } =
-          pointStyles[index % pointStyles.length];
-
-        return {
-          label: exerciseName,
-          data: dataForChart.map((value, i) => ({
-            x: i + offset,
-            y: value,
-          })),
-          borderColor: randomColor,
-          pointBorderColor: randomColor,
-          // pointBackgroundColor: pointBackgroundColors,
-          pointBackgroundColor: backgroundColors,
-          pointRadius: radius,
-          pointStyle: style,
-        };
-      });
-      setWorkoutData({
-        labels: uniqueDates,
-        datasets: newDatasets,
-      });
-    } else {
-      setWorkoutData({ datasets: [] });
+    if (isDeadhang) {
+      setMetricType(METRICS.DURATION);
+    } else if (metricType === METRICS.DURATION) {
+      // Reset to default if not deadhang and somehow duration is selected.
+      setMetricType(METRICS.WEIGHT);
     }
-  }, [selectedExercises, chartData]);
 
-  const chartConfig = {
-    labels: chartData.map((item) => item.date),
-    datasets: chartData.map((item, index) => ({
-      label: "Max Weight (kg)",
-      data: chartData.map((item) => item.maxWeight),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    })),
-  };
+    const processedData = processChartData({
+      chartData,
+      isDarkMode,
+      selectedExercises,
+      metricType,
+    });
 
-  // const options = {
-  //   responsive: true,
-  //   type: "line",
-  //   plugins: {
-  //     legend: { position: "top" },
-  //     // title: { display: true, text: `Progress for: ${selectedExercises[0]}` },
-  //     title: { display: true, text: `Progress for: test` },
-  //   },
-  //   scales: {
-  //     y: { beginAtZero: true },
-  //   },
-  // };
+    setWorkoutData(processedData);
+  }, [selectedExercises, chartData, metricType]);
 
-  const options = {
+  const chartOptions = {
     responsive: true,
+    // responsive: false, // to make the scroll
+    maintainAspectRatio: false,
+    // maintainAspectRatio: true,
     plugins: {
       legend: {
         position: "top" as const,
+        labels: {
+          color: isDarkMode ? "#f0f0f0" : "#1a1a1a",
+        },
       },
-      title: {
-        display: true,
-        text: "Workout Progress",
+      visualOffset: {
+        offset: 4, // pixels
       },
     },
     scales: {
       y: {
         title: {
           display: true,
-          text: "Max Weight (kgs)",
+          text:
+            metricType === METRICS.WEIGHT
+              ? "Max Weight (kgs)"
+              : metricType === METRICS.REPS
+                ? "Max Reps"
+                : "Max Duration (sec)",
+          color: isDarkMode ? "#f0f0f0" : "#1a1a1a",
+        },
+        grid: {
+          color: isDarkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)",
+        },
+        ticks: {
+          color: isDarkMode ? "#f0f0f0" : "#1a1a1a",
+        },
+      },
+      // prevent axis tick skipping
+      x: {
+        // This is the key part to control the axis ticks
+        ticks: {
+          // Prevents skipping
+          autoSkip: false,
+          // Rotates labels to fit
+          maxRotation: workoutData.rotationAngle,
+          minRotation: workoutData.rotationAngle,
+          color: isDarkMode ? "#f0f0f0" : "#1a1a1a",
+        },
+        grid: {
+          color: isDarkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)",
         },
       },
     },
   };
+
+  const tooltipContent = (
+    <>
+      <p>Click a legend item to hide or show its exercise line.</p>
+      {selectedExercises.length > 1 && (
+        <>
+          <p>
+            On the graph, when viewing more than 1 exercise, empty nodes mean
+            that the exercise was not performed on that day
+          </p>
+          <p>
+            When viewing more than 1 exercise, the graph shows the maxWeight /
+            maxReps of that day
+          </p>
+        </>
+      )}
+    </>
+  );
+
   return (
     <>
-      {workoutData?.datasets?.length > 0 ? (
+      {workoutData?.datasets?.length > 0 && (
         <>
           {selectedExercises.length === 1 && (
+            <p>Viewing individual data for: {selectedExercises[0]}</p>
+          )}
+          {!isDeadhang && (
             <>
-              <p>Viewing individual data for: {selectedExercises[0]}</p>
-              <button onClick={handleSeeSetsData}>
-                See individual data for sets
-              </button>
               <label>Choose metric type:</label>
               <select
                 onChange={(event) => handleChangeMetricType(event)}
                 size={1}
+                className="metric-select"
               >
-                <option key={"Weight"} value={"Weight"}>
+                <option key={METRICS.WEIGHT} value={METRICS.WEIGHT}>
                   Weight
                 </option>
-                <option key={"Reps"} value={"Reps"}>
+                <option key={METRICS.REPS} value={METRICS.REPS}>
                   Reps
                 </option>
               </select>
             </>
           )}
-
-          <Line options={options} data={testing ? testing : workoutData} />
+          <div className="chart-wrapper">
+            <div
+              className="chart-content"
+              style={{
+                // width: `${getChartWidth(workoutData.labels.length)}`,
+                width: `${width < 768 ? getChartWidth(workoutData.labels.length) : `100%`}`,
+                // width: `50%`,
+              }}
+            >
+              <Line options={chartOptions} data={workoutData} />
+              <Tooltip>{tooltipContent}</Tooltip>
+            </div>
+          </div>
         </>
-      ) : (
-        <p>Please select one or more exercises to view the graph.</p>
       )}
     </>
   );
