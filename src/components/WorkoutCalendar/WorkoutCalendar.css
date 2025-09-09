@@ -6,7 +6,7 @@
 
 .workout-day.isExercise {
   color: #fff;
-  background: radial-gradient(circle, rgb(17 173 17 / 87%) 8%, transparent 49%);
+  background: radial-gradient(circle, rgb(var(--darkMode-workoutDay-color) / 87%) 8%, transparent 49%);
 }
 
 .calendar-container
@@ -15,7 +15,7 @@
   color: #fff;
   background: radial-gradient(
     circle,
-    rgb(25 217 148 / 87%) 8%,
+    rgb(var(--calendar-highlight-single) / 87%) 8%,
     transparent 49%
   );
 }
@@ -71,7 +71,7 @@
 }
 
 .tooltip-highlighted-single {
-  background-color: rgb(25 217 148);
+  background-color: rgb(var(--calendar-highlight-single));
   color: #fff;
 }
 
@@ -86,7 +86,7 @@
 }
 
 .tooltip-green {
-  background-color: rgb(17 173 17 / 87%);
+  background-color: rgb(var(--darkMode-workoutDay-color) / 87%);
   color: #fff;
 }
 
@@ -97,6 +97,10 @@
     transparent 55%
   );
 }
+
+.workout-day {
+    text-decoration-thickness: 2px;
+  }
 
 @media all and (max-width: 1000px) {
   .react-calendar,
@@ -121,10 +125,6 @@
     top: -14px;
     left: -23px;
   }
-
-  .workout-day {
-    text-decoration-thickness: 2px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -145,10 +145,9 @@
     border-radius: 50%;
   }
 
-  .calendar-container .react-calendar .react-calendar__tile--active {
+  .calendar-container .react-calendar .react-calendar__tile--active:not(.isExercise) {
     background: none;
-    border: 2px solid rgb(47 124 199);
-    border: 2px solid rgb(89 241 187);
+    border: 2px solid  rgb(var(--darkMode-latest-color));
     border-radius: 50%;
   }
 
@@ -157,28 +156,28 @@
     .react-calendar__tile--active.workout-day.isExercise {
     color: #fff;
     background: none;
-    border: 2px solid rgb(89 241 187);
+    border: 2px solid  rgb(var(--darkMode-latest-color));
     border-radius: 50%;
   }
 
   .tooltip-highlighted-single {
     background-color: transparent;
     color: #000;
-    border: 2px solid rgb(89 241 187);
+    border: 2px solid  rgb(var(--darkMode-latest-color));
     padding: 0 2px;
   }
 
   .tooltip-green {
     background-color: transparent;
     color: #000;
-    border: 2px solid rgb(17 173 17);
+    border: 2px solid rgb(var(--darkMode-workoutDay-color));
     padding: 0 2px;
   }
 
   .workout-day.isExercise {
     color: #fff;
     background: none;
-    border: 2px solid rgb(17 173 17);
+    border: 2px solid rgb(var(--darkMode-workoutDay-color));
     border-radius: 50%;
   }
 
@@ -188,7 +187,7 @@
 
   .tooltip-highlighted {
     background: none;
-    border: 2px solid rgb(47 124 199);
+    border: 2px solid rgb(var(--darkMode-latest-color));
     color: #000;
     padding: 0 2px;
   }

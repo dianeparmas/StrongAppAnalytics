@@ -11,6 +11,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --darkMode-latest-color: 89 241 187;
+  --darkMode-workoutDay-color: 17 173 17;
+  --calendar-highlight-single: 25 217 148;
 }
 
 a {
