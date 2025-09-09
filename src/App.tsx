@@ -1,24 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 
-import Papa from "papaparse";
-
 import Chart from "./components/Chart/Chart";
 import Icon from "./components/Icon/Icon";
 import Menu from "./components/Menu/Menu.tsx";
 import SavedFilePrompt from "./components/SavedFilePrompt/SavedFilePrompt.tsx";
-import Select from "./components/Select/Select.tsx";
+import SelectExercises from "./components/SelectExercises/SelectExercises.tsx";
 import UploadBtn from "./components/UploadBtn/UploadBtn";
 import WelcomeScreen from "./components/WelcomeScreen/WelcomeScreen";
 import WorkoutCalendar from "./components/WorkoutCalendar/WorkoutCalendar";
 
-import {
-  ParsedResult,
-  ParsedResultData,
-} from "./types/strongAppAnalytics.types";
+import { extractUniqueWorkoutDates } from "./utils/dates";
 
 import { useCsvUpload } from "./hooks/useCsvUpload";
 import { useDataLoader } from "./hooks/useDataLoader.ts";
-import { useFileActions } from "./hooks/useFileActions";
 
 import DATA_TYPE from "./constants/dataType.ts";
 import MOCK_DATA from "./constants/mockData.ts";
@@ -26,21 +20,35 @@ import MOCK_DATA from "./constants/mockData.ts";
 import "./App.css";
 
 function App() {
-  const [parsedCsv, setParsedCsv] = useState<ParsedResult[]>([]);
-  const [selectedExercise, setSelectedExercise] = useState<
-    string | null | string[]
-  >(null);
-  const [uniqueDates, setUniqueDates] = useState<string[]>([]);
-  const [lastSaved, setLastSaved] = useState("");
-  const [saveNew, setSaveNew] = useState(false);
-  const [uploadSuccessful, setUploadSuccessful] = useState(false);
-  const [currentDataType, setCurrentDataType] = useState("");
-  const [uploadedFileDate, setUploadedFileDate] = useState<Date>();
-  const [mergedData, setMergedData] = useState([]);
+  const [selectedExercise, setSelectedExercise] = useState<string[]>([]);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  const {
+    parsedCsv,
+    uniqueDates,
+    uploadSuccessful,
+    fileLastModifiedDate,
+    currentDataType,
+    setParsedCsv,
+    setUniqueDates,
+    setCurrentDataType,
+    setFileLastModifiedDate,
+    handleUploadFile,
+  } = useCsvUpload();
+
+  const { loadExistingFile, loadMockData } = useDataLoader({
+    setParsedCsv,
+    setUniqueDates,
+    setCurrentDataType,
+  });
 
   useEffect(() => {
     checkLocalStorage();
   }, []);
+
+  useEffect(() => {
+    checkLocalStorage();
+  }, [currentDataType]);
 
   const uniqueExercises = useMemo(() => {
     if (parsedCsv.length === 0) return [];
@@ -48,60 +56,9 @@ function App() {
     return Array.from(exerciseNames);
   }, [parsedCsv]);
 
-  const modifyParsedCSV = (csv) => {
-    const transformedData = csv?.data
-      ?.filter((result) => {
-        return result["Set Order"] !== "Rest Timer";
-      })
-      .map((result: any) => {
-        return {
-          Date: result.Date,
-          Duration: result["Seconds"],
-          Name: result["Exercise Name"],
-          Notes: result.Notes,
-          Reps: result.Reps,
-          SetOrder: result["Set Order"],
-          Weight: result["Weight (kg)"],
-          WorkoutNr: result["Workout #"],
-          WorkoutName: result["Workout Name"],
-          WorkoutNotes: result["Workout Notes"],
-        };
-      });
-    return transformedData as ParsedResultData[];
-  };
-
-  const handleUploadFile = (e) => {
-    const file = e?.target?.files[0];
-
-    if (file) {
-      Papa.parse(file, {
-        header: true,
-        dynamicTyping: true, // Convert numbers automatically
-        skipEmptyLines: true,
-        complete: function (results) {
-          const modifiedResults = modifyParsedCSV(results);
-          setUploadedFileDate(file.lastModifiedDate);
-          setParsedCsv(modifiedResults);
-          const allWorkoutDates = modifiedResults.map(
-            (row: ParsedResultData) => row.Date.split(" ")[0],
-          );
-          const uniqueWorkoutDates = [...new Set(allWorkoutDates)];
-          setUniqueDates(uniqueWorkoutDates);
-
-          setTimeout(() => {
-            setUploadSuccessful(true);
-          }, 500);
-
-          setCurrentDataType("real");
-        },
-        error: function (err, file) {
-          console.error("Error while parsing:", err, file);
-        },
-      });
-    }
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleExerciseChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const selectElement = event.target;
     const newSelectedOptions: string[] = [];
     for (const option of selectElement.options as unknown as HTMLOptionElement[]) {
@@ -116,7 +73,7 @@ function App() {
     );
   };
 
-  const handleChangeSingle = (value: string) => {
+  const handleExerciseChangeSingle = (value: string) => {
     setSelectedExercise([value]);
   };
 
@@ -127,92 +84,67 @@ function App() {
       const savedDate = new Date(parsedData.storedAt);
       setLastSaved(savedDate);
       setFileLastModifiedDate(new Date(parsedData?.fileSaved));
+      if (!parsedCsv.length) {
+        setParsedCsv(JSON.parse(parsedData.data));
+      }
     }
-  };
-
-  const handleSave = () => {
-    console.log("handlesave fn");
-    const payload = {
-      data: JSON.stringify(parsedCsv),
-      storedAt: new Date().toISOString(),
-      fileSaved: fileLastModifiedDate?.toISOString(),
-    };
-
-    localStorage.setItem("StrongAppCSV", JSON.stringify(payload));
-    // setSaveNew(true);
-    setAppState((prevState) => ({ ...prevState, showSaveSuccess: true }));
-  };
-
-  const handleDelete = () => {
-    localStorage.removeItem("StrongAppCSV");
-    setDeleteFile(true);
-  };
-
-  const handleUseExistingFile = () => {
-    const savedData = localStorage.getItem("StrongAppCSV");
-    let cleanedData: ParsedResultData[] = [];
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      cleanedData = JSON.parse(parsedData?.data)?.filter((result) => {
-        return result.SetOrder !== "Rest Timer";
-      });
-      setParsedCsv(cleanedData);
-    }
-    console.log("handleuse fn", parsedCsv);
-    const allWorkoutDates = cleanedData.map(
-      (row: ParsedResultData) => row.Date.split(" ")[0],
-    );
-    const uniqueWorkoutDates = [...new Set(allWorkoutDates)];
-    setUniqueDates(uniqueWorkoutDates);
-    setCurrentDataType("real");
-  };
-
-  const handleUseMockData = () => {
-    setParsedCsv(MOCK_DATA);
-    const allWorkoutDates = MOCK_DATA.map(
-      (row: ParsedResultData) => row.Date.split(" ")[0],
-    );
-    const uniqueWorkoutDates = [...new Set(allWorkoutDates)];
-    setUniqueDates(uniqueWorkoutDates);
-    setCurrentDataType("mock");
   };
 
   useEffect(() => {
     if (currentDataType === "mock") {
       setParsedCsv(MOCK_DATA);
-      const allWorkoutDates = MOCK_DATA.map(
-        (row: ParsedResultData) => row.Date.split(" ")[0],
-      );
-      const uniqueWorkoutDates = [...new Set(allWorkoutDates)];
-      setUniqueDates(uniqueWorkoutDates);
+      setUniqueDates(extractUniqueWorkoutDates(MOCK_DATA));
     }
   }, [currentDataType]);
+
+  const handleSwitchDataType = (dataType: string) => {
+    setCurrentDataType(
+      dataType === DATA_TYPE.MOCK ? DATA_TYPE.REAL : DATA_TYPE.MOCK,
+    );
+    setUniqueDates([]);
+    setSelectedExercise([]);
+
+    if (lastSaved && dataType === DATA_TYPE.MOCK) {
+      loadExistingFile();
+      setUniqueDates(extractUniqueWorkoutDates(parsedCsv));
+    }
+  };
+
+  const noDataType = currentDataType === "";
+  const hasSelectedexercise = selectedExercise?.length > 0;
+  const hasDataSelected = parsedCsv.length > 0 && hasSelectedexercise;
+
   return (
     <>
       {noDataType && (
         <WelcomeScreen
           uploadSuccessful={uploadSuccessful}
           handleUploadFile={handleUploadFile}
-          handleUseMockData={handleUseMockData}
+          handleUseMockData={loadMockData}
         />
       )}
       <Menu
         currentDataType={currentDataType}
-        handleUseMockData={handleUseMockData}
+        handleUseMockData={loadMockData}
         handleSwitchDataType={handleSwitchDataType}
         lastSaved={lastSaved}
         handleUploadFile={handleUploadFile}
+        parsedCsv={parsedCsv}
+        fileLastModifiedDate={fileLastModifiedDate}
+        setParsedCsv={setParsedCsv}
+        setFileLastModifiedDate={setFileLastModifiedDate}
+        setLastSaved={setLastSaved}
       />
-      <div className="chart-excercise-container">
+      <div className="chart-exercise-container">
         {uniqueDates.length > 0 && uniqueExercises.length > 0 && (
           <div
-            className={`select-container ${hasSelectedExcercise ? "select-container--with-chart" : ""}`}
+            className={`select-container ${hasSelectedexercise ? "select-container--with-chart" : ""}`}
           >
-            <Select
+            <SelectExercises
               currentDataType={currentDataType}
               uniqueExercises={uniqueExercises}
-              onChangeFunction={handleChange}
-              onChangeFunctionSingle={handleChangeSingle}
+              onChangeFunction={handleExerciseChange}
+              onChangeFunctionSingle={handleExerciseChangeSingle}
             />
           </div>
         )}
@@ -224,23 +156,20 @@ function App() {
       </div>
       <div className="content">
         {hasDataSelected && (
-          <WorkoutCalendar uniqueDates={uniqueDates} workoutData={parsedCsv} currentDataType={currentDataType} />
+          <WorkoutCalendar
+            uniqueDates={uniqueDates}
+            workoutData={parsedCsv}
+            selectedExercise={selectedExercise}
+          />
         )}
-        {lastSaved && !saveNew ? (
-          !deleteFile && (
-            <SavedFilePrompt
-              isSuccessfulUpload={uploadSuccessful}
-              handleUploadFile={handleUploadFile}
-              lastSaved={lastSaved}
-              fileLastModifiedDate={fileLastModifiedDate}
-              loadExistingFile={loadExistingFile}
-              handleSave={handleSave}
-              saveNew={saveNew}
-              handleDelete={handleDelete}
-              deleteFile={deleteFile}
-              currentDataType={currentDataType}
-            />
-          )
+        {lastSaved && parsedCsv.length > 0 ? (
+          <SavedFilePrompt
+            handleUploadFile={handleUploadFile}
+            lastSaved={lastSaved}
+            fileLastModifiedDate={fileLastModifiedDate}
+            loadExistingFile={loadExistingFile}
+            currentDataType={currentDataType}
+          />
         ) : (
           <>
             {currentDataType !== DATA_TYPE.MOCK && (
@@ -254,36 +183,23 @@ function App() {
                     </div>
                   </>
                 )}
-                {/* <UploadBtn
-                  defaultLabel={"Upload file"}
-                  isSuccessfulUpload={uploadSuccessful}
-                  onChangeFunction={handleUploadFile}
-                  className="input-new"
-                /> */}
-                <UploadBtn
-                  defaultLabel={"Upload file"}
-                  isSuccessfulUpload={appState.showUploadSuccess}
-                  onChangeFunction={handleUploadFile}
-                  className="input-new"
-                />
-                {/* {appState.showUploadSuccess && (
+                {(!uploadSuccessful || parsedCsv.length === 0) && (
                   <>
-                    <Icon icon="success" />
-                    <p>Want to save the uploaded .csv file to the browser?</p>
-                    <button onClick={handleSave}>
-                      {appState.showSaveSuccess ? "File saved!" : "Save file"}
-                    </button>
-                    {appState.showSaveSuccess && <Icon icon="success" />}
-                  </>
-                )} */}
-                {uploadSuccessful && (
-                  <>
-                    {appState.showUploadSuccess && <Icon icon="success" />}
-                    <p>Want to save the uploaded .csv file to the browser?</p>
-                    <button onClick={handleSave}>
-                      {appState.showSaveSuccess ? "File saved!" : "Save file"}
-                    </button>
-                    {appState.showSaveSuccess && <Icon icon="success" />}
+                    <UploadBtn
+                      defaultLabel={"Upload"}
+                      isSuccessfulUpload={
+                        parsedCsv.length === 0 ? uploadSuccessful : undefined
+                      }
+                      onChangeFunction={handleUploadFile}
+                      className="input-new"
+                    />
+                    <p>
+                      Or use{" "}
+                      <button onClick={loadMockData} className="text-button">
+                        mock data
+                      </button>{" "}
+                      instead
+                    </p>
                   </>
                 )}
               </>

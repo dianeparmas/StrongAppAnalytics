@@ -46,6 +46,7 @@ body {
 .select-container--with-chart {
   display: block;
   width: auto;
+  margin-bottom: 1rem;
 }
 
 .smaller-text {
@@ -76,7 +77,7 @@ body {
 
 @media all and (max-width: 1000px) {
   #root {
-    padding: 5px;
+    padding: 0.625rem;
   }
 
   .chart-exercise-container {
