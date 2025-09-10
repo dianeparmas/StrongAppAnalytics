@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { SavedFilePromptProps } from "../../types/SavedFilePrompt.types";
 
 import DATA_TYPE from "../../constants/dataType";
@@ -13,6 +15,13 @@ const SavedFilePrompt = ({
   lastSaved,
   loadExistingFile,
 }: SavedFilePromptProps) => {
+  const [showUseThisBtn, setShowUseThisBtn] = useState(true);
+
+  const handleClickBtn = () => {
+    loadExistingFile();
+    setShowUseThisBtn(false);
+  };
+
   return (
     <>
       <p>{`${currentDataType === DATA_TYPE.REAL ? "Using" : "Detecting"} a saved file:`}</p>
@@ -23,14 +32,19 @@ const SavedFilePrompt = ({
           (local time)
         </li>
       </ul>
-      <p>Would you like to use that file or upload a new one?</p>
       <div className="button-container">
-        <button onClick={loadExistingFile}>Use this file</button>
+        {showUseThisBtn && (
+          <>
+            <p>Would you like to use that file or upload a new one?</p>
+            <button onClick={handleClickBtn}>Use this file</button>
+          </>
+        )}
         <UploadBtn
           defaultLabel={"Upload another"}
           onChangeFunction={handleUploadFile}
           className="input-new"
           keepLabel
+          setShowUseThisBtn={setShowUseThisBtn}
         />
       </div>
     </>

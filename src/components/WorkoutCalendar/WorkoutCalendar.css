@@ -106,7 +106,7 @@
   text-decoration-thickness: 2px;
 }
 
-@media all and (max-width: 1000px) {
+@media all and (max-width: 767px) {
   .react-calendar,
   .workout-details {
     width: 100%;

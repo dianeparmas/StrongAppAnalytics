@@ -5,9 +5,47 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Strong-app</title>
+    <meta
+      name="description"
+      content="Custom simple analytics for Strong App by Diane Parmas, for personal use"
+    />
+    <meta
+      name="keywords"
+      content="diane parmas, dianeparmas, portfolio, portfoolio, strong, strong app, strong-app"
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   </head>
+  <style>
+    .dp-logo {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+    }
+    .dp-logo img {
+      width: 20px;
+    }
+    .dp-logo a {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+    }
+    @media (prefers-color-scheme: dark) {
+      .dp-logo img {
+        filter: drop-shadow(0 0 0px white);
+      }
+    }
+  </style>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <div class="dp-logo">
+      <img src="./dp.png" /><a
+        target="_blank"
+        href="https://dianeparmas.com/portfolio"
+      ></a>
+    </div>
   </body>
 </html>
